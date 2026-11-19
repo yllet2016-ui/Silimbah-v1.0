@@ -102,11 +102,11 @@ export const ScreenPublicVerification: React.FC = () => {
                 <div>
                   <h4 className="font-bold text-sm">
                     {matchedCert.status === 'berlaku'
-                      ? 'Dokumen Sah & Berlaku Resmi'
+                      ? 'Piagam Terverifikasi & Berlaku'
                       : 'Piagam Telah Dicabut (Tidak Berlaku)'}
                   </h4>
                   <p className="text-[11px] opacity-80">
-                    Tercatat resmi dalam pangkalan data terintegrasi SiLimbah Indonesia.
+                    Tercatat dalam pangkalan data pelatihan internal SiLimbah.
                   </p>
                 </div>
               </div>

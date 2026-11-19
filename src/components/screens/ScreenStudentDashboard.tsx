@@ -35,7 +35,7 @@ export const ScreenStudentDashboard: React.FC = () => {
   const user = currentUser!;
   const track = user.track || 'lengkap';
   const maxXP = getTrackMaxXP(track);
-  const { level, title, progressPercent } = getLevelInfo(user.xp, track);
+  const { level, title, progressPercent, xpRange } = getLevelInfo(user.xp, track);
   const gradeInfo = getStudentFinalGrade(user);
 
   const [isAnonymous, setIsAnonymous] = useState(user.isAnonymousInLeaderboard || false);
@@ -77,7 +77,7 @@ export const ScreenStudentDashboard: React.FC = () => {
               </p>
               <p className="text-xs font-semibold text-amber-600 mt-1 flex items-center gap-1.5">
                 <Trophy className="w-3.5 h-3.5 text-amber-500" />
-                Level {level}: {title}
+                Level {level}: {title} ({xpRange})
               </p>
             </div>
           </div>
@@ -96,7 +96,7 @@ export const ScreenStudentDashboard: React.FC = () => {
               />
             </div>
             <p className="text-[11px] text-slate-400 text-right">
-              {100 - progressPercent}% menuju level berikutnya
+              {progressPercent}% dari {maxXP.toLocaleString('id-ID')} XP maksimum jalur
             </p>
           </div>
         </div>
@@ -118,7 +118,7 @@ export const ScreenStudentDashboard: React.FC = () => {
                 </h3>
               </div>
               <p className={`text-xs ${gradeInfo.isEligible ? 'text-slate-300' : 'text-slate-500'} max-w-xl`}>
-                Syarat Kelulusan: Menuntaskan seluruh misi pada jalur dengan minimal 1 Bintang, serta nilai Post-Test mencapai KKM ({kkmThreshold}).
+                Syarat Kelulusan: Menuntaskan seluruh misi pada jalur dengan minimal 1 Bintang, nilai Post-Test ≥ {kkmThreshold} (KKM), dan Nilai Akhir ≥ {kkmThreshold}.
               </p>
 
               <div className="flex flex-wrap gap-4 pt-2 text-xs">
@@ -137,6 +137,14 @@ export const ScreenStudentDashboard: React.FC = () => {
                     <XCircle className="w-4 h-4 text-rose-500" />
                   )}
                   <span>Post-Test: {user.postTestScore ?? 'Belum Ujian'} (KKM {kkmThreshold})</span>
+                </div>
+                <div className="flex items-center gap-1.5">
+                  {gradeInfo.finalScore >= kkmThreshold ? (
+                    <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+                  ) : (
+                    <XCircle className="w-4 h-4 text-rose-500" />
+                  )}
+                  <span>Nilai Akhir: {gradeInfo.finalScore} (≥ {kkmThreshold})</span>
                 </div>
               </div>
             </div>
@@ -160,7 +168,7 @@ export const ScreenStudentDashboard: React.FC = () => {
                   className="px-6 py-2.5 bg-amber-400 hover:bg-amber-300 text-slate-950 font-bold text-xs rounded-xl flex items-center gap-2 cursor-pointer shadow-md transition-all"
                 >
                   <Award className="w-4 h-4" />
-                  <span>Buka & Unduh Piagam Resmi</span>
+                  <span>Buka & Unduh Piagam Kelulusan</span>
                 </button>
               ) : (
                 <button
@@ -386,7 +394,7 @@ export const ScreenStudentDashboard: React.FC = () => {
                       <td className="px-4 py-3 capitalize text-slate-600">
                         {u.track?.replace('_', ' ') || 'Lengkap'}
                       </td>
-                      <td className="px-4 py-3 text-slate-600">{u.levelTitle}</td>
+                      <td className="px-4 py-3 text-slate-600">{getLevelInfo(u.xp, u.track).title}</td>
                       <td className="px-4 py-3 text-right font-mono font-bold text-teal-700">
                         {u.xp} XP
                       </td>

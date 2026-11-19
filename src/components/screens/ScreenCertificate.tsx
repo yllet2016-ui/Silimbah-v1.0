@@ -48,7 +48,7 @@ export const ScreenCertificate: React.FC = () => {
           <Award className="w-12 h-12 text-slate-300 mx-auto" />
           <h2 className="text-lg font-bold text-slate-900">Piagam Belum Diterbitkan</h2>
           <p className="text-xs text-slate-500">
-            Anda belum memenuhi seluruh kriteria kelulusan (semua misi minimal 1★ dan Post-Test ≥ 75).
+            Anda belum memenuhi seluruh kriteria kelulusan (semua misi minimal 1★, Post-Test ≥ 75, dan Nilai Akhir ≥ 75).
           </p>
           <button
             onClick={() => setCurrentScreen('mission_map')}
@@ -118,7 +118,7 @@ export const ScreenCertificate: React.FC = () => {
 
             <div className="text-center">
               <span className="text-[11px] font-mono tracking-widest text-slate-500 uppercase">
-                LEMBAR SERTIFIKASI RESMI
+                PIAGAM KELULUSAN PELATIHAN
               </span>
               <p className="text-xs font-mono font-bold text-teal-800 mt-0.5">
                 No: {cert.certificateNumber}
@@ -149,7 +149,7 @@ export const ScreenCertificate: React.FC = () => {
               Pengelolaan Air Limbah Domestik
             </h1>
             <p className="text-xs text-slate-600 max-w-lg mx-auto">
-              Diberikan sebagai pengakuan resmi atas keberhasilan menyelesaikan seluruh modul pembelajaran, simulasi interaktif unit pengolahan, dan ujian kompetensi akhir.
+              Diberikan sebagai bukti kelulusan pelatihan atas keberhasilan menyelesaikan seluruh modul pembelajaran, simulasi interaktif unit pengolahan, dan evaluasi kompetensi akhir.
             </p>
           </div>
 

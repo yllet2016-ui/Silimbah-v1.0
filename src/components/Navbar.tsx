@@ -26,6 +26,7 @@ export const Navbar: React.FC = () => {
     resetAllDemoData,
     switchUser,
     users,
+    getLevelInfo,
   } = useApp();
 
   const [isDemoMenuOpen, setIsDemoMenuOpen] = useState(false);
@@ -301,7 +302,9 @@ export const Navbar: React.FC = () => {
                   {currentUser?.name}
                 </p>
                 <p className="text-slate-500 text-[11px] leading-tight">
-                  {currentUser?.levelTitle}
+                  {currentUser?.role === 'peserta'
+                    ? getLevelInfo(currentUser.xp, currentUser.track).title
+                    : currentUser?.levelTitle}
                 </p>
               </div>
               <ChevronDown className="w-4 h-4 text-slate-400" />
@@ -382,7 +385,7 @@ export const Navbar: React.FC = () => {
                   Pilih Akun Demo Prototipe (PRD Hal 20)
                 </h3>
                 <p className="text-xs text-slate-500 mt-1">
-                  10 akun resmi yang mewakili setiap aktor dalam skenario pengujian SiLimbah.
+                  10 akun demo yang mewakili setiap aktor dalam skenario pengujian SiLimbah.
                   Semua password default: <code className="bg-slate-100 px-1 py-0.5 rounded text-teal-700 font-mono">SiLimbah#2026</code>
                 </p>
               </div>
@@ -443,7 +446,7 @@ export const Navbar: React.FC = () => {
                     )}
 
                     <div className="flex items-center justify-between text-[11px] text-slate-500 pt-2 border-t border-slate-100">
-                      <span>{u.levelTitle}</span>
+                      <span>{u.role === 'peserta' ? getLevelInfo(u.xp, u.track).title : u.levelTitle}</span>
                       <span className="font-semibold text-slate-700">{u.xp} XP</span>
                     </div>
                   </div>

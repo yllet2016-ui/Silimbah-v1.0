@@ -74,32 +74,39 @@ Setiap misi simulasi dilengkapi diagram teknis interaktif dan kanvas penampang s
 ## 4. SISTEM ALERT LAPANGAN (AL-01 s/d AL-21)
 - AL-01..AL-21 mencakup tinggi lumpur tangki septik, rembesan, setoran truk melebihi kapasitas, BOD efluen > 30 mg/L, pH, bak pengering penuh, lemak pemisah lemak >= 25%, minyak efluen > 5 mg/L, debit puncak, penyumbatan media biofilter, DO bak aerasi < 1,0 mg/L / blower mati, lumpur pengendap akhir >= 1/3, total coliform > 3.000/100 mL, level bak ekualisasi >= 90% (AL-16), saringan tersumbat (AL-17), filter pasir tersumbat (AL-18), sisa klorin di luar 0,2-1,0 mg/L (AL-19), detektor biogas >= 10% LEL / H2S >= 10 ppm (AL-20), dan pelepasan ke badan kali/irigasi saat belum memenuhi mutu (AL-21, penalti -10 poin).
 
-## 5. GAMIFIKASI & FORMULA PENILAIAN RESMI
+## 5. GAMIFIKASI & FORMULA PENILAIAN
 - Formula Skor Misi: (0.4 * Aksi Tepat) + (0.3 * Kecepatan) + (0.3 * Kualitas Efluen) - Penalti
 - Formula Nilai Akhir: (40% * Rata-rata Skor Misi) + (60% * Skor Post-Test)
+- Syarat Lulus & Piagam (KKM = 75): (a) semua misi di jalur minimal 1 bintang, (b) nilai post-test >= 75, dan (c) Nilai Akhir >= 75 (Pre-test tidak memengaruhi kelulusan).
 - Predikat:
-  * >= 85: Lulus, Dengan Pujian (Cum Laude)
-  * 75 - 84: Lulus, Sangat Baik
-  * 70 - 74: Lulus
-  * < 70: Belum Lulus (Wajib Remedial)
-- 5 Jenjang Operator: Calon Operator -> Operator Pratama -> Operator Muda -> Operator Madya -> Operator Utama.
+  * >= 85,0: Lulus Dengan Pujian
+  * 80,0 - 84,9: Lulus Sangat Baik
+  * 75,0 - 79,9: Lulus Baik
+  * < 75,0 atau post-test < 75: Belum Lulus (Wajib Remedial Misi dan Ujian)
+- Baku Mutu Permen LHK P.68/2016: pH 6.0-9.0, BOD <= 30 mg/L, COD <= 100 mg/L, TSS <= 30 mg/L, Minyak & Lemak <= 5 mg/L, Amonia <= 10 mg/L, Total Coliform <= 3.000 CFU/100 mL.
+- 5 Jenjang Level Operator (% dari XP maksimum jalur: BW 1.500, GW 1.500, Lengkap 3.400):
+  * Level 1 Calon Operator (0-14% · Lengkap: 0-475 XP · BW/GW: 0-209 XP)
+  * Level 2 Operator Pratama (15-34% · Lengkap: 476-1.155 XP · BW/GW: 210-509 XP)
+  * Level 3 Operator Muda (35-59% · Lengkap: 1.156-2.005 XP · BW/GW: 510-884 XP)
+  * Level 4 Operator Madya (60-84% · Lengkap: 2.006-2.855 XP · BW/GW: 885-1.259 XP)
+  * Level 5 Operator Utama (85-100% · Lengkap: 2.856-3.400 XP · BW/GW: 1.260-1.500 XP)
 - 14 Lencana Keahlian (Badges).
 
-## 6. MULTI-ROLE & 10 AKUN DEMO RESMI PRD
+## 6. MULTI-ROLE & 10 AKUN DEMO PRD
 1. Peserta:
-   - peserta.lengkap (Misi BW-4 aktif alert)
-   - peserta.lulus (Lulus 100%, nilai 91.2, siap cetak piagam)
-   - peserta.bw (Jalur Black Water baru)
-   - peserta.gw (Jalur Grey Water)
-2. Instruktur: instruktur.uptd, instruktur.iplt (Evaluasi kelas, ekspor CSV, bank soal).
-3. Admin Operator: admin.uptd, admin.ipal (Kelola akun, kelas/angkatan, fasilitas IPAL/IPLT).
-4. Pimpinan UPTD: pimpinan.uptd (Laporan eksekutif, rekap kelulusan, ringkasan kepatuhan baku mutu).
-5. Superadmin: superadmin (Multi-tenant operator UPTD PALD/IPLT se-Indonesia, lisensi kuota).
+   - peserta.lengkap (UPTD PALD Kabupaten Sukamaju · Misi BW-4 aktif alert)
+   - peserta.lulus (UPTD PALD Kabupaten Sukamaju · Lulus 100%, Nilai Akhir 91,2, siap cetak piagam)
+   - peserta.bw (UPTD PALD Kabupaten Sukamaju · Jalur Black Water baru)
+   - peserta.gw (IPAL Tirta Kencana · Menguji reaktor anaerob bersekat (ABR) dan biofilter anaerob di GW-3)
+2. Instruktur: instruktur.uptd (UPTD PALD Kabupaten Sukamaju), instruktur.iplt (IPLT Tirta Mandiri) — Evaluasi kelas, ekspor CSV, bank soal.
+3. Admin Operator: admin.uptd (UPTD PALD Kabupaten Sukamaju), admin.ipal (IPAL Tirta Kencana) — Kelola akun, kelas/angkatan, fasilitas IPAL/IPLT.
+4. Pimpinan UPTD: pimpinan.uptd (Kepala UPTD PALD Kabupaten Sukamaju) — Laporan eksekutif, rekap kelulusan, ringkasan kepatuhan baku mutu.
+5. Superadmin: superadmin (Multi-tenant operator UPTD PALD/IPLT, lisensi kuota).
 Password default seluruh akun: SiLimbah#2026
 
 ## 7. CARA MENGGUNAKAN APLIKASI
-- Sebagai Peserta: Login -> Pilih Jalur -> Selesaikan Misi -> Ikuti Briefing -> Pelajari Teori -> Lakukan Simulasi & Atasi Alert -> Selesaikan Kuis & Post-Test -> Unduh Piagam.
-- Sebagai Instruktur: Buka Evaluasi Kelas -> Pantau Siswa Kritis (<70) -> Ekspor Laporan CSV -> Atur Soal Kuis.
+- Sebagai Peserta: Login -> Pilih Jalur -> Selesaikan Misi -> Ikuti Briefing -> Pelajari Teori -> Lakukan Simulasi & Atasi Alert -> Selesaikan Kuis & Post-Test (target minimal 75,0) -> Unduh Piagam Kelulusan Pelatihan.
+- Sebagai Instruktur: Buka Evaluasi Kelas -> Pantau Siswa Perlu Perhatian (< 75) -> Ekspor Laporan CSV -> Atur Soal Kuis.
 - Sebagai Admin Operator: Kelola akun operator dan pantau status fasilitas tangki/truk.
 - Sebagai Pimpinan / Publik: Verifikasi keaslian piagam via nomor sertifikat atau QR Code.
 `;
@@ -174,7 +181,7 @@ Password default seluruh akun: SiLimbah#2026
                 '7. Kuis & Ujian Evaluasi',
                 '8. Debriefing & Rekap Nilai',
                 '9. Dashboard Peserta & XP',
-                '10. Piagam Kelulusan Resmi',
+                '10. Piagam Kelulusan Pelatihan',
                 '11. Evaluasi Kelas Instruktur',
                 '12. Detail Evaluasi Siswa',
                 '13. Kelola Akun & Kelas',
@@ -439,7 +446,7 @@ Password default seluruh akun: SiLimbah#2026
           <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-xs">
             <h5 className="font-bold text-slate-900 text-sm mb-3 flex items-center gap-2">
               <Sparkles className="w-4 h-4 text-amber-500" />
-              Formula Resmi Penilaian SiLimbah
+              Formula Penilaian &amp; Kelulusan SiLimbah (KKM 75)
             </h5>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
               <div className="p-4 rounded-xl bg-slate-50 border border-slate-200">
@@ -459,16 +466,19 @@ Password default seluruh akun: SiLimbah#2026
 
               <div className="p-4 rounded-xl bg-slate-50 border border-slate-200">
                 <span className="font-bold text-teal-800 block text-xs uppercase tracking-wide">
-                  2. Formula Nilai Akhir Kelulusan
+                  2. Formula Nilai Akhir &amp; Syarat Kelulusan
                 </span>
                 <code className="block mt-2 font-mono text-slate-900 bg-white p-2.5 rounded-lg border border-slate-300 text-[11px]">
                   Nilai Akhir = (40% × Rata-rata Misi) + (60% × Post-Test)
                 </code>
+                <p className="text-[11px] text-slate-600 mt-2">
+                  Syarat lulus: semua misi minimal 1★, Post-Test ≥ 75, dan Nilai Akhir ≥ 75 (Pre-Test tidak memengaruhi kelulusan).
+                </p>
                 <ul className="mt-2 space-y-1 text-slate-600 list-disc list-inside">
-                  <li><strong>≥ 85.0</strong>: Lulus, Dengan Pujian (*Cum Laude*)</li>
-                  <li><strong>75.0 - 84.9</strong>: Lulus, Sangat Baik</li>
-                  <li><strong>70.0 - 74.9</strong>: Lulus</li>
-                  <li><strong>&lt; 70.0</strong>: Belum Lulus (Wajib Remedial Misi &amp; Ujian)</li>
+                  <li><strong>≥ 85,0</strong>: Lulus Dengan Pujian</li>
+                  <li><strong>80,0 – 84,9</strong>: Lulus Sangat Baik</li>
+                  <li><strong>75,0 – 79,9</strong>: Lulus Baik</li>
+                  <li><strong>&lt; 75,0 atau Post-Test &lt; 75</strong>: Belum Lulus (Wajib Remedial Misi &amp; Ujian)</li>
                 </ul>
               </div>
             </div>
@@ -478,13 +488,14 @@ Password default seluruh akun: SiLimbah#2026
             <h5 className="font-bold text-slate-900 text-sm mb-3">
               Standar Baku Mutu Air Limbah Domestik (Permen LHK No. P.68/2016)
             </h5>
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-2 text-center">
+            <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-2 text-center">
               {[
                 { param: 'pH', limit: '6.0 - 9.0', unit: '-' },
                 { param: 'BOD', limit: '≤ 30', unit: 'mg/L' },
                 { param: 'COD', limit: '≤ 100', unit: 'mg/L' },
                 { param: 'TSS', limit: '≤ 30', unit: 'mg/L' },
                 { param: 'Minyak & Lemak', limit: '≤ 5', unit: 'mg/L' },
+                { param: 'Amonia', limit: '≤ 10', unit: 'mg/L' },
                 { param: 'Total Coliform', limit: '≤ 3.000', unit: 'CFU/100 mL' },
               ].map((item, idx) => (
                 <div key={idx} className="p-3 bg-slate-50 rounded-xl border border-slate-200">
@@ -497,19 +508,25 @@ Password default seluruh akun: SiLimbah#2026
           </div>
 
           <div className="bg-white p-5 rounded-xl border border-slate-200 shadow-xs text-xs">
-            <h5 className="font-bold text-slate-900 text-sm mb-2">5 Jenjang Level Operator (XP Progression)</h5>
+            <h5 className="font-bold text-slate-900 text-sm mb-1">
+              5 Jenjang Level Operator (% XP Maksimum Jalur)
+            </h5>
+            <p className="text-[11px] text-slate-500 mb-3">
+              XP maksimum jalur: Lengkap = 3.400 XP · Black Water / Grey Water = 1.500 XP.
+            </p>
             <div className="grid grid-cols-1 sm:grid-cols-5 gap-2">
               {[
-                { lvl: 'Level 1', name: 'Calon Operator', range: '0 - 499 XP' },
-                { lvl: 'Level 2', name: 'Operator Pratama', range: '500 - 1.199 XP' },
-                { lvl: 'Level 3', name: 'Operator Muda', range: '1.200 - 2.499 XP' },
-                { lvl: 'Level 4', name: 'Operator Madya', range: '2.500 - 3.999 XP' },
-                { lvl: 'Level 5', name: 'Operator Utama', range: '4.000+ XP' },
+                { lvl: 'Level 1', name: 'Calon Operator', pct: '0–14%', rangeLengkap: '0–475 XP', rangeShort: 'BW/GW: 0–209 XP' },
+                { lvl: 'Level 2', name: 'Operator Pratama', pct: '15–34%', rangeLengkap: '476–1.155 XP', rangeShort: 'BW/GW: 210–509 XP' },
+                { lvl: 'Level 3', name: 'Operator Muda', pct: '35–59%', rangeLengkap: '1.156–2.005 XP', rangeShort: 'BW/GW: 510–884 XP' },
+                { lvl: 'Level 4', name: 'Operator Madya', pct: '60–84%', rangeLengkap: '2.006–2.855 XP', rangeShort: 'BW/GW: 885–1.259 XP' },
+                { lvl: 'Level 5', name: 'Operator Utama', pct: '85–100%', rangeLengkap: '2.856–3.400 XP', rangeShort: 'BW/GW: 1.260–1.500 XP' },
               ].map((lvl, idx) => (
                 <div key={idx} className="p-3 bg-slate-50 rounded-lg border border-slate-200 text-center">
-                  <span className="font-mono text-[11px] font-bold text-teal-700">{lvl.lvl}</span>
+                  <span className="font-mono text-[11px] font-bold text-teal-700">{lvl.lvl} ({lvl.pct})</span>
                   <p className="font-bold text-slate-800 mt-0.5">{lvl.name}</p>
-                  <p className="text-[10px] text-slate-500 mt-1">{lvl.range}</p>
+                  <p className="text-[10px] font-mono text-slate-700 mt-1">{lvl.rangeLengkap}</p>
+                  <p className="text-[10px] text-slate-400">{lvl.rangeShort}</p>
                 </div>
               ))}
             </div>
@@ -520,12 +537,12 @@ Password default seluruh akun: SiLimbah#2026
     {
       id: 'bab6',
       title: 'Bab 6: Multi-Role & 10 Akun Demo PRD',
-      shortDesc: 'Struktur hak akses 5 peran dan 10 akun resmi untuk pengujian lengkap tanpa mendaftar.',
+      shortDesc: 'Struktur hak akses 5 peran dan 10 akun demo untuk pengujian lengkap tanpa mendaftar.',
       icon: <Users className="w-4 h-4 text-purple-600" />,
       content: (
         <div className="space-y-4 text-xs">
           <p className="text-sm text-slate-600 leading-relaxed">
-            Aplikasi menyediakan 10 akun resmi siap uji (PRD Hal 20) yang mencakup seluruh peran operasional. Semua akun menggunakan password default: <code className="bg-slate-100 px-1 py-0.5 rounded text-teal-700 font-mono font-bold">SiLimbah#2026</code>.
+            Aplikasi menyediakan 10 akun demo siap uji (PRD Hal 20) yang mencakup seluruh peran operasional. Semua akun menggunakan password default: <code className="bg-slate-100 px-1 py-0.5 rounded text-teal-700 font-mono font-bold">SiLimbah#2026</code>.
           </p>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
@@ -533,21 +550,21 @@ Password default seluruh akun: SiLimbah#2026
               {
                 user: 'peserta.lengkap',
                 role: 'Peserta (Jalur Lengkap)',
-                org: 'UPTD PALD Kab. Bekasi',
+                org: 'UPTD PALD Kabupaten Sukamaju',
                 state: 'Sedang di Misi BW-4 (Ada Alert Lapangan Aktif)',
-                desc: 'Cocok untuk menguji simulasi instalasi IPLT dan penanganan alert secara langsung.',
+                desc: 'Cocok untuk menguji simulasi penerimaan lumpur tinja dan penanganan alert secara langsung.',
               },
               {
                 user: 'peserta.lulus',
                 role: 'Peserta (Lulus)',
-                org: 'UPTD PALD Kab. Bekasi',
-                state: 'Lulus 100% · Nilai Akhir 91.2',
-                desc: 'Cocok untuk langsung membuka & mencetak Piagam Kelulusan Resmi dan cek verifikasi QR.',
+                org: 'UPTD PALD Kabupaten Sukamaju',
+                state: 'Lulus 100% · Nilai Akhir 91,2 (Lulus Dengan Pujian)',
+                desc: 'Cocok untuk langsung membuka & mencetak Piagam Kelulusan Pelatihan dan cek verifikasi QR.',
               },
               {
                 user: 'peserta.bw',
                 role: 'Peserta (Black Water)',
-                org: 'UPTD PALD Kab. Bekasi',
+                org: 'UPTD PALD Kabupaten Sukamaju',
                 state: 'Baru menyelesaikan BW-1',
                 desc: 'Cocok untuk menguji perakitan tangki septik SNI (BW-2) dari awal.',
               },
@@ -556,14 +573,14 @@ Password default seluruh akun: SiLimbah#2026
                 role: 'Peserta (Grey Water)',
                 org: 'IPAL Tirta Kencana',
                 state: 'Sedang di Misi GW-3',
-                desc: 'Cocok untuk menguji simulasi biofilter aerobik dan aerasi micro-bubble.',
+                desc: 'Cocok untuk menguji reaktor anaerob bersekat (ABR) dan biofilter anaerob di GW-3.',
               },
               {
                 user: 'instruktur.uptd',
                 role: 'Instruktur',
-                org: 'UPTD PALD Kab. Bekasi',
+                org: 'UPTD PALD Kabupaten Sukamaju',
                 state: 'Pengampu 24 Peserta Angkatan I',
-                desc: 'Bisa membuka Evaluasi Kelas, melihat siswa remedial (<70), dan ekspor data CSV.',
+                desc: 'Bisa membuka Evaluasi Kelas, melihat siswa remedial (< 75), dan ekspor data CSV.',
               },
               {
                 user: 'instruktur.iplt',
@@ -575,7 +592,7 @@ Password default seluruh akun: SiLimbah#2026
               {
                 user: 'admin.uptd',
                 role: 'Admin Operator',
-                org: 'UPTD PALD Kab. Bekasi',
+                org: 'UPTD PALD Kabupaten Sukamaju',
                 state: 'Administrator Wilayah',
                 desc: 'Bisa mengelola akun operator, membuat angkatan/kelas baru, dan monitoring kuota.',
               },
@@ -589,7 +606,7 @@ Password default seluruh akun: SiLimbah#2026
               {
                 user: 'pimpinan.uptd',
                 role: 'Pimpinan Operator',
-                org: 'Kepala UPTD PALD Kab. Bekasi',
+                org: 'Kepala UPTD PALD Kabupaten Sukamaju',
                 state: 'Pengawas Eksekutif',
                 desc: 'Melihat rangkuman kepatuhan baku mutu lingkungan dan rekapitulasi kelulusan.',
               },
@@ -653,10 +670,10 @@ Password default seluruh akun: SiLimbah#2026
                 <strong>Selesaikan Kuis Evaluasi Misi:</strong> Jawab 5 soal pemahaman untuk mendapatkan bintang (★) dan bonus XP.
               </li>
               <li>
-                <strong>Tuntaskan Post-Test:</strong> Setelah semua level terbuka, selesaikan ujian komprehensif 20 soal dengan target nilai minimal 70.0.
+                <strong>Tuntaskan Post-Test:</strong> Setelah semua level terbuka, selesaikan ujian komprehensif 20 soal dengan target nilai minimal 75,0 dan Nilai Akhir ≥ 75,0.
               </li>
               <li>
-                <strong>Cetak Piagam Resmi:</strong> Kunjungi menu <em>Piagam</em> untuk mengunduh piagam berformat sertifikat nasional yang dilengkapi nomor registrasi dan QR Code resmi.
+                <strong>Cetak Piagam Kelulusan:</strong> Kunjungi menu <em>Piagam</em> untuk mengunduh piagam kelulusan pelatihan yang dilengkapi nomor registrasi dan kode QR verifikasi.
               </li>
             </ol>
           </div>
@@ -671,7 +688,7 @@ Password default seluruh akun: SiLimbah#2026
                 <strong>Buka Menu Evaluasi Kelas:</strong> Pantau grafik statistik rata-rata kelas, tingkat kelulusan, dan persentase kepatuhan baku mutu.
               </li>
               <li>
-                <strong>Identifikasi Peserta Berisiko:</strong> Filter tabel siswa pada kategori <em>Perlu Perhatian</em> (&lt; 70) untuk memberikan bimbingan khusus.
+                <strong>Identifikasi Peserta Berisiko:</strong> Filter tabel siswa pada kategori <em>Perlu Perhatian</em> (&lt; 75) untuk memberikan bimbingan khusus.
               </li>
               <li>
                 <strong>Ekspor Data ke CSV:</strong> Klik tombol <em>Ekspor Rekap CSV</em> untuk arsip nilai dan pelaporan ke dinas terkait.
@@ -729,9 +746,9 @@ Password default seluruh akun: SiLimbah#2026
           <div className="flex items-center gap-2">
             <span className="bg-teal-500/30 text-teal-200 border border-teal-400/30 text-xs px-2.5 py-0.5 rounded-full font-semibold uppercase tracking-wider flex items-center gap-1.5">
               <Sparkles className="w-3.5 h-3.5" />
-              Dokumen Resmi Aplikasi
+              Dokumen Panduan Aplikasi
             </span>
-            <span className="text-slate-400 text-xs">Versi 1.0 · Magister Pradita 2026</span>
+            <span className="text-slate-400 text-xs">Versi 1.1 · Magister Pradita 2026</span>
           </div>
 
           <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight">
@@ -739,7 +756,7 @@ Password default seluruh akun: SiLimbah#2026
           </h1>
 
           <p className="text-slate-300 text-sm leading-relaxed">
-            Panduan komprehensif yang merangkum seluruh fitur nyata, kurikulum teknis Black Water &amp; Grey Water, diagram animasi instalasi, katalog alert lapangan (AL-01 s/d AL-15), sistem penilaian resmi, serta panduan pengoperasian langkah demi langkah untuk setiap peran.
+            Panduan komprehensif yang merangkum seluruh fitur nyata, kurikulum teknis Black Water &amp; Grey Water, diagram animasi instalasi, katalog alert lapangan (AL-01 s/d AL-21), sistem penilaian pelatihan, serta panduan pengoperasian langkah demi langkah untuk setiap peran.
           </p>
 
           <div className="pt-2 flex flex-wrap items-center gap-3">

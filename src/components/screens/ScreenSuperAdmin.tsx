@@ -205,7 +205,7 @@ export const ScreenSuperAdmin: React.FC = () => {
             <form onSubmit={handleAddSubmit} className="space-y-4">
               <div>
                 <label className="block text-xs font-semibold text-slate-700 mb-1">
-                  Nama Resmi Operator:
+                  Nama Lembaga Operator:
                 </label>
                 <input
                   type="text"

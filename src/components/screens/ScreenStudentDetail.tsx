@@ -28,10 +28,14 @@ export const ScreenStudentDetail: React.FC = () => {
     certificates,
     alertLogs,
     kkmThreshold,
+    getLevelInfo,
+    getTrackMaxXP,
   } = useApp();
 
   const student = users.find((u) => u.id === inspectedStudentId) || users[4];
   const gradeInfo = getStudentFinalGrade(student);
+  const levelInfo = getLevelInfo(student.xp, student.track);
+  const maxXP = getTrackMaxXP(student.track);
   const cert = certificates.find((c) => c.userId === student.id);
 
   const [showRevokeModal, setShowRevokeModal] = useState(false);
@@ -79,9 +83,11 @@ export const ScreenStudentDetail: React.FC = () => {
                 {student.email} · {currentOperator?.name} · {student.classCohort}
               </p>
               <div className="flex items-center gap-3 text-xs mt-1">
-                <span className="font-semibold text-slate-700">{student.levelTitle}</span>
+                <span className="font-semibold text-slate-700">
+                  Level {levelInfo.level} — {levelInfo.title} ({levelInfo.xpRange})
+                </span>
                 <span className="text-slate-300">·</span>
-                <span className="font-mono font-bold text-teal-700">{student.xp} XP</span>
+                <span className="font-mono font-bold text-teal-700">{student.xp} / {maxXP} XP</span>
                 <span className="text-slate-300">·</span>
                 <span className="text-slate-500">Terakhir aktif: {student.lastActive}</span>
               </div>
@@ -134,10 +140,15 @@ export const ScreenStudentDetail: React.FC = () => {
 
         {/* Grade Summary Card */}
         <div className="bg-white rounded-3xl p-6 border border-slate-200 shadow-xs">
-          <h3 className="text-sm font-bold text-slate-900 mb-3 flex items-center gap-2">
-            <Award className="w-4 h-4 text-teal-600" />
-            Rekapitulasi Penilaian Kelulusan
-          </h3>
+          <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
+            <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2">
+              <Award className="w-4 h-4 text-teal-600" />
+              Rekapitulasi Penilaian Kelulusan
+            </h3>
+            <span className="text-[11px] text-slate-500">
+              Syarat Lulus: Semua misi ≥ 1★, Post-Test ≥ {kkmThreshold}, dan Nilai Akhir ≥ {kkmThreshold}
+            </span>
+          </div>
 
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-xs">
             <div className="p-3 bg-slate-50 rounded-xl border border-slate-100">
@@ -160,7 +171,7 @@ export const ScreenStudentDetail: React.FC = () => {
             </div>
             <div className="p-3 bg-slate-50 rounded-xl border border-slate-100">
               <span className="text-slate-400">Predikat Kelulusan</span>
-              <p className="text-xs font-bold text-amber-700 mt-1">
+              <p className={`text-xs font-bold mt-1 ${gradeInfo.isEligible ? 'text-emerald-700' : 'text-rose-700'}`}>
                 {gradeInfo.predicate}
               </p>
             </div>

@@ -30,7 +30,7 @@ export const ScreenMissionMap: React.FC = () => {
   const completedMissions = currentUser?.completedMissions || {};
   const currentXP = currentUser?.xp || 0;
   const maxXP = getTrackMaxXP(track);
-  const { level, title, progressPercent } = getLevelInfo(currentXP, track);
+  const { level, title, progressPercent, xpRange } = getLevelInfo(currentXP, track);
 
   // Check mission unlock status
   // Pre-test M-0 is always unlocked.
@@ -282,7 +282,7 @@ export const ScreenMissionMap: React.FC = () => {
               </div>
               <p className="text-xs text-slate-500 mt-0.5">
                 <strong className="text-teal-700 font-semibold">{currentXP}</strong> / {maxXP} XP
-                ({progressPercent}%)
+                ({progressPercent}%) · <span className="text-slate-400">Kisaran {xpRange}</span>
               </p>
               <div className="w-48 h-2 bg-slate-100 rounded-full mt-1.5 overflow-hidden border border-slate-200">
                 <div
@@ -390,10 +390,10 @@ export const ScreenMissionMap: React.FC = () => {
           <div className="mt-6 p-4 rounded-2xl bg-gradient-to-r from-teal-500/10 to-emerald-500/10 border border-teal-200 text-center max-w-md w-full">
             <Award className="w-8 h-8 text-teal-600 mx-auto mb-2" />
             <h4 className="text-sm font-bold text-slate-900">
-              Piagam Kelulusan Resmi Terverifikasi
+              Piagam Kelulusan Pelatihan Terverifikasi
             </h4>
             <p className="text-xs text-slate-500 mt-1">
-              Syarat: Seluruh misi minimal 1 Bintang dan Nilai Post-Test ≥ 75 (KKM).
+              Syarat: Seluruh misi minimal 1 Bintang, Post-Test ≥ 75 (KKM), dan Nilai Akhir ≥ 75.
             </p>
             {currentUser?.certificateIssued ? (
               <button

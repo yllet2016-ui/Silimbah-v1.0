@@ -28,6 +28,9 @@ export const ScreenOperatorDashboard: React.FC = () => {
     setCurrentScreen,
     kkmThreshold,
     alertLogs,
+    getStudentFinalGrade,
+    getLevelInfo,
+    getTrackMaxXP,
   } = useApp();
 
   const role = currentUser?.role || 'instruktur';
@@ -46,6 +49,7 @@ export const ScreenOperatorDashboard: React.FC = () => {
   // Filters state
   const [selectedCohort, setSelectedCohort] = useState<string>('all');
   const [selectedTrack, setSelectedTrack] = useState<string>('all');
+  const [selectedStatus, setSelectedStatus] = useState<string>('all');
   const [searchQuery, setSearchQuery] = useState('');
 
   // Operator-filtered participants
@@ -55,16 +59,40 @@ export const ScreenOperatorDashboard: React.FC = () => {
       (role === 'superadmin' ? true : u.operatorId === op.id)
   );
 
+  // Perlu Perhatian: nilai < 75 (misi/post-test/nilai akhir), tidak aktif >= 7 hari, atau gagal >= 3x
+  const isStudentNeedingAttention = (s: typeof operatorStudents[number]) => {
+    const isInactive = s.lastActive?.includes('8 hari') || s.lastActive?.includes('7 hari');
+    const hasMultipleFails = Boolean(
+      s.failedAttemptsCount && Object.values(s.failedAttemptsCount).some((v) => v >= 3)
+    );
+    const grade = getStudentFinalGrade(s);
+    const belowKkmPost = s.postTestScore !== undefined && s.postTestScore < kkmThreshold;
+    const belowKkmFinal = s.postTestScore !== undefined && grade.finalScore < kkmThreshold;
+    const belowKkmMission = grade.avgMissionScore > 0 && grade.avgMissionScore < kkmThreshold;
+    return isInactive || hasMultipleFails || belowKkmPost || belowKkmFinal || belowKkmMission;
+  };
+
   const filteredStudents = operatorStudents.filter((s) => {
     if (selectedCohort !== 'all' && s.classCohort !== selectedCohort) return false;
     if (selectedTrack !== 'all' && s.track !== selectedTrack) return false;
+    if (selectedStatus === 'lulus' && !s.certificateIssued && !getStudentFinalGrade(s).isEligible) return false;
+    if (selectedStatus === 'perlu_perhatian' && !isStudentNeedingAttention(s)) return false;
+    if (
+      selectedStatus === 'dalam_proses' &&
+      (s.certificateIssued || getStudentFinalGrade(s).isEligible || isStudentNeedingAttention(s))
+    ) {
+      return false;
+    }
     if (searchQuery && !s.name.toLowerCase().includes(searchQuery.toLowerCase())) return false;
     return true;
   });
 
   // KPI calculations
   const totalStudents = operatorStudents.length;
-  const passedKkmCount = operatorStudents.filter((s) => (s.postTestScore ?? 0) >= kkmThreshold).length;
+  const passedKkmCount = operatorStudents.filter((s) => {
+    const g = getStudentFinalGrade(s);
+    return (s.postTestScore ?? 0) >= kkmThreshold && g.finalScore >= kkmThreshold;
+  }).length;
   const graduatedCount = operatorStudents.filter((s) => s.certificateIssued).length;
 
   const preScores = operatorStudents.filter((s) => s.preTestScore !== undefined).map((s) => s.preTestScore!);
@@ -76,12 +104,8 @@ export const ScreenOperatorDashboard: React.FC = () => {
   const pctKkm = totalStudents > 0 ? Math.round((passedKkmCount / totalStudents) * 100) : 0;
   const pctGraduated = totalStudents > 0 ? Math.round((graduatedCount / totalStudents) * 100) : 0;
 
-  // Watchlist: Inactive >= 7 days OR Failed attempts >= 3 (PRD Hal 18)
-  const studentsNeedingAttention = operatorStudents.filter((s) => {
-    const isInactive = s.lastActive?.includes('8 hari') || s.lastActive?.includes('7 hari');
-    const hasMultipleFails = s.failedAttemptsCount && Object.values(s.failedAttemptsCount).some((v) => v >= 3);
-    return isInactive || hasMultipleFails;
-  });
+  // Watchlist: Perlu Perhatian (< 75, inaktif >= 7 hari, atau gagal >= 3x)
+  const studentsNeedingAttention = operatorStudents.filter(isStudentNeedingAttention);
 
   // Mission Difficulty Analytics
   const missionAnalytics = [
@@ -236,6 +260,11 @@ export const ScreenOperatorDashboard: React.FC = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
               {studentsNeedingAttention.map((s) => {
                 const isInactive = s.lastActive?.includes('8 hari') || s.lastActive?.includes('7 hari');
+                const grade = getStudentFinalGrade(s);
+                const hasBelowKkm =
+                  (s.postTestScore !== undefined && s.postTestScore < kkmThreshold) ||
+                  (s.postTestScore !== undefined && grade.finalScore < kkmThreshold) ||
+                  (grade.avgMissionScore > 0 && grade.avgMissionScore < kkmThreshold);
                 return (
                   <div
                     key={s.id}
@@ -247,7 +276,9 @@ export const ScreenOperatorDashboard: React.FC = () => {
                         {s.classCohort} · Terakhir aktif: <strong className="text-rose-700">{s.lastActive}</strong>
                       </p>
                       <span className="text-[10px] text-rose-600 font-medium mt-0.5 block">
-                        {isInactive
+                        {hasBelowKkm
+                          ? `Nilai di bawah KKM (< ${kkmThreshold}): perlu remedial misi/ujian`
+                          : isInactive
                           ? 'Perlu kontak tindak lanjut: Tidak aktif ≥ 7 hari'
                           : 'Perlu bimbingan teknis: Gagal ≥ 3x di misi yang sama'}
                       </span>
@@ -301,6 +332,17 @@ export const ScreenOperatorDashboard: React.FC = () => {
               <option value="Kelas IPLT 2026-A">Kelas IPLT 2026-A</option>
               <option value="Warga Peduli Air 2026">Warga Peduli Air 2026</option>
             </select>
+
+            <select
+              value={selectedStatus}
+              onChange={(e) => setSelectedStatus(e.target.value)}
+              className="px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-slate-700 cursor-pointer"
+            >
+              <option value="all">Semua Status Kelulusan</option>
+              <option value="lulus">Lulus (≥ {kkmThreshold})</option>
+              <option value="perlu_perhatian">Perlu Perhatian (&lt; {kkmThreshold} / Remedial)</option>
+              <option value="dalam_proses">Dalam Proses</option>
+            </select>
           </div>
 
           <span className="text-xs text-slate-400 font-mono">
@@ -327,6 +369,10 @@ export const ScreenOperatorDashboard: React.FC = () => {
               <tbody className="divide-y divide-slate-100">
                 {filteredStudents.map((student) => {
                   const mDoneCount = Object.keys(student.completedMissions).length;
+                  const levelInfo = getLevelInfo(student.xp, student.track);
+                  const maxXP = getTrackMaxXP(student.track);
+                  const gradeInfo = getStudentFinalGrade(student);
+                  const needsAttention = isStudentNeedingAttention(student);
                   return (
                     <tr key={student.id} className="hover:bg-slate-50/80 transition-colors">
                       <td className="px-5 py-4">
@@ -344,9 +390,11 @@ export const ScreenOperatorDashboard: React.FC = () => {
                       </td>
 
                       <td className="px-5 py-4">
-                        <span className="font-semibold text-slate-800">{student.levelTitle}</span>
+                        <span className="font-semibold text-slate-800">
+                          Lv {levelInfo.level} · {levelInfo.title}
+                        </span>
                         <div className="text-[11px] text-teal-700 font-mono font-bold">
-                          {student.xp} XP
+                          {student.xp} / {maxXP} XP
                         </div>
                       </td>
 
@@ -361,9 +409,11 @@ export const ScreenOperatorDashboard: React.FC = () => {
                       <td className="px-5 py-4 text-center font-mono font-bold">
                         <span
                           className={
-                            (student.postTestScore ?? 0) >= kkmThreshold
+                            student.postTestScore === undefined
+                              ? 'text-slate-500'
+                              : student.postTestScore >= kkmThreshold
                               ? 'text-teal-700'
-                              : 'text-slate-500'
+                              : 'text-rose-600'
                           }
                         >
                           {student.postTestScore ?? '—'}
@@ -371,10 +421,15 @@ export const ScreenOperatorDashboard: React.FC = () => {
                       </td>
 
                       <td className="px-5 py-4 text-center">
-                        {student.certificateIssued ? (
+                        {student.certificateIssued || gradeInfo.isEligible ? (
                           <span className="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
                             <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
-                            Lulus (Piagam Terbit)
+                            Lulus ({gradeInfo.finalScore})
+                          </span>
+                        ) : needsAttention ? (
+                          <span className="inline-flex items-center gap-1 text-[11px] font-bold text-rose-800 bg-rose-50 px-2 py-0.5 rounded-full border border-rose-200">
+                            <AlertTriangle className="w-3.5 h-3.5 text-rose-600" />
+                            Perlu Perhatian
                           </span>
                         ) : (
                           <span className="text-[11px] text-slate-500 bg-slate-100 px-2 py-0.5 rounded-full">
@@ -417,12 +472,12 @@ export const ScreenOperatorDashboard: React.FC = () => {
                   <div className="flex justify-between">
                     <span className="font-semibold text-slate-800">{m.id} · {m.name}</span>
                     <span className="font-mono text-slate-500">
-                      Rerata {m.avgScore} | Lulus: <strong className={m.passRate < 70 ? 'text-rose-600' : 'text-teal-700'}>{m.passRate}%</strong>
+                      Rerata {m.avgScore} | Lulus: <strong className={m.passRate < kkmThreshold ? 'text-rose-600' : 'text-teal-700'}>{m.passRate}%</strong>
                     </span>
                   </div>
                   <div className="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
                     <div
-                      className={`h-full ${m.passRate < 70 ? 'bg-rose-500' : 'bg-teal-500'}`}
+                      className={`h-full ${m.passRate < kkmThreshold ? 'bg-rose-500' : 'bg-teal-500'}`}
                       style={{ width: `${m.passRate}%` }}
                     />
                   </div>

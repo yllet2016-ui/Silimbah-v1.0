@@ -62,7 +62,7 @@ export const ScreenModuleLearning: React.FC = () => {
           </button>
 
           <span className="text-xs text-slate-400 font-mono">
-            Modul Teori Sanitasi Terakreditasi
+            Modul Teori Sanitasi
           </span>
         </div>
 
@@ -395,7 +395,7 @@ export const ScreenModuleLearning: React.FC = () => {
                   </p>
                 </div>
                 <span className="text-xs bg-emerald-50 text-emerald-700 border border-emerald-200 px-3 py-1 rounded-full font-semibold">
-                  Standar Wajib Nasional
+                  Standar Baku Mutu
                 </span>
               </div>
 
@@ -422,7 +422,7 @@ export const ScreenModuleLearning: React.FC = () => {
                           {param.name.includes('TSS') && 'Kekeruhan dan endapan lumpur dasar'}
                           {param.name.includes('Minyak') && 'Mencegah lapisan minyak menghalangi udara'}
                           {param.name.includes('Coliform') && 'Pencegahan penyebaran wabah patogen tinja'}
-                          {param.name.includes('Amoniak') && 'Toksisitas akut ikan dan bau busuk'}
+                          {param.name.includes('Amonia') && 'Toksisitas akut ikan dan bau busuk'}
                           {param.name.includes('Debit') && 'Kapasitas hidrolis saluran permukiman'}
                         </td>
                       </tr>

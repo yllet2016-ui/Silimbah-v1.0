@@ -114,15 +114,15 @@ interface AppContextType {
     postTestScore: number;
     finalScore: number;
     isEligible: boolean;
-    predicate: 'Lulus' | 'Lulus, Sangat Baik' | 'Lulus, Dengan Pujian' | 'Belum Lulus';
+    predicate: 'Lulus Baik' | 'Lulus Sangat Baik' | 'Lulus Dengan Pujian' | 'Belum Lulus';
   };
   getTrackMaxXP: (track?: LearningTrack) => number;
-  getLevelInfo: (xp: number, track?: LearningTrack) => { level: number; title: string; progressPercent: number };
+  getLevelInfo: (xp: number, track?: LearningTrack) => { level: number; title: string; progressPercent: number; xpRange: string };
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
-const STORAGE_KEY = 'silimbah_app_state_v1_1';
+const STORAGE_KEY = 'silimbah_app_state_v1_2';
 
 export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   // Load initial state from localStorage or mockData
@@ -225,13 +225,13 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const currentUser = users.find((u) => u.id === currentUserId) || null;
   const currentOperator = operators.find((o) => o.id === currentUser?.operatorId) || null;
 
-  // Level & XP math according to PRD Bagian 4:
-  // Track Max XP: BW: 1500, GW: 1500, Lengkap: 3400
-  // Level 1: 0% - 19% (Operator Magang)
-  // Level 2: 20% - 39% (Operator Muda)
-  // Level 3: 40% - 59% (Operator Terampil)
-  // Level 4: 60% - 79% (Operator Andal)
-  // Level 5: >= 80% (Ahli Sanitasi)
+  // Jenjang Level Operator berdasarkan persentase XP maksimum jalur:
+  // Track Max XP: Black Water 1.500, Grey Water 1.500, Lengkap 3.400
+  // Level 1 Calon Operator: 0–14%   (Lengkap: 0–475,   BW/GW: 0–209)
+  // Level 2 Operator Pratama: 15–34% (Lengkap: 476–1.155, BW/GW: 210–509)
+  // Level 3 Operator Muda: 35–59%    (Lengkap: 1.156–2.005, BW/GW: 510–884)
+  // Level 4 Operator Madya: 60–84%   (Lengkap: 2.006–2.855, BW/GW: 885–1.259)
+  // Level 5 Operator Utama: 85–100%  (Lengkap: 2.856–3.400, BW/GW: 1.260–1.500)
   const getTrackMaxXP = (track?: LearningTrack): number => {
     if (track === 'black_water' || track === 'grey_water') return 1500;
     return 3400; // default / lengkap
@@ -241,27 +241,52 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     const maxXp = getTrackMaxXP(track);
     const ratio = Math.max(0, Math.min(1, xp / maxXp));
     const percent = Math.round(ratio * 100);
+    const isShortTrack = maxXp === 1500;
 
-    if (ratio >= 0.8) {
-      return { level: 5, title: 'Ahli Sanitasi', progressPercent: percent };
+    if (ratio >= 0.84) {
+      return {
+        level: 5,
+        title: 'Operator Utama',
+        progressPercent: percent,
+        xpRange: isShortTrack ? '1.260–1.500 XP' : '2.856–3.400 XP',
+      };
     }
-    if (ratio >= 0.6) {
-      return { level: 4, title: 'Operator Andal', progressPercent: percent };
+    if (ratio >= 0.59) {
+      return {
+        level: 4,
+        title: 'Operator Madya',
+        progressPercent: percent,
+        xpRange: isShortTrack ? '885–1.259 XP' : '2.006–2.855 XP',
+      };
     }
-    if (ratio >= 0.4) {
-      return { level: 3, title: 'Operator Terampil', progressPercent: percent };
+    if (ratio >= 0.34) {
+      return {
+        level: 3,
+        title: 'Operator Muda',
+        progressPercent: percent,
+        xpRange: isShortTrack ? '510–884 XP' : '1.156–2.005 XP',
+      };
     }
-    if (ratio >= 0.2) {
-      return { level: 2, title: 'Operator Muda', progressPercent: percent };
+    if (ratio >= 0.14) {
+      return {
+        level: 2,
+        title: 'Operator Pratama',
+        progressPercent: percent,
+        xpRange: isShortTrack ? '210–509 XP' : '476–1.155 XP',
+      };
     }
-    return { level: 1, title: 'Operator Magang', progressPercent: percent };
+    return {
+      level: 1,
+      title: 'Calon Operator',
+      progressPercent: percent,
+      xpRange: isShortTrack ? '0–209 XP' : '0–475 XP',
+    };
   };
 
-  // Helper: Grade calculation
+  // Helper: Grade calculation (KKM = 75)
   // Nilai akhir = 40% rata-rata skor misi + 60% nilai post-test.
   const getStudentFinalGrade = (user: User) => {
-    const completed = Object.values(user.completedMissions);
-    // Filter out M-0 pre-test from mission avg if present
+    // Filter out M-0 pre-test and M-X post-test from mission avg if present
     const missionScores = Object.entries(user.completedMissions)
       .filter(([id]) => id !== 'M-0' && id !== 'M-X')
       .map(([, data]) => data.score);
@@ -293,16 +318,17 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       return rec && rec.stars >= 1;
     });
 
-    const isEligible = allPassed && postTest >= kkmThreshold;
+    // Syarat lulus: (a) semua misi minimal 1 bintang, (b) post-test >= 75, (c) Nilai Akhir >= 75
+    const isEligible = allPassed && postTest >= kkmThreshold && finalScore >= kkmThreshold;
 
-    let predicate: 'Lulus' | 'Lulus, Sangat Baik' | 'Lulus, Dengan Pujian' | 'Belum Lulus' = 'Belum Lulus';
+    let predicate: 'Lulus Baik' | 'Lulus Sangat Baik' | 'Lulus Dengan Pujian' | 'Belum Lulus' = 'Belum Lulus';
     if (isEligible) {
-      if (finalScore >= 93) {
-        predicate = 'Lulus, Dengan Pujian';
-      } else if (finalScore >= 85) {
-        predicate = 'Lulus, Sangat Baik';
+      if (finalScore >= 85) {
+        predicate = 'Lulus Dengan Pujian';
+      } else if (finalScore >= 80) {
+        predicate = 'Lulus Sangat Baik';
       } else {
-        predicate = 'Lulus';
+        predicate = 'Lulus Baik';
       }
     }
 
@@ -470,7 +496,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       operatorType: op.type,
       track: student.track || 'lengkap',
       finalScore,
-      predicate: predicate as 'Lulus' | 'Lulus, Sangat Baik' | 'Lulus, Dengan Pujian',
+      predicate: predicate as 'Lulus Baik' | 'Lulus Sangat Baik' | 'Lulus Dengan Pujian',
       finalLevelTitle: student.levelTitle,
       issueDate: new Intl.DateTimeFormat('id-ID', { dateStyle: 'long' }).format(new Date()),
       status: 'berlaku',
@@ -510,7 +536,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       track: userData.track || 'lengkap',
       classCohort: userData.classCohort || 'Angkatan 1 (2026)',
       level: 1,
-      levelTitle: 'Operator Magang',
+      levelTitle: 'Calon Operator',
       xp: 0,
       badges: [],
       completedMissions: {},
@@ -557,7 +583,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
               ...u,
               xp: 0,
               level: 1,
-              levelTitle: 'Operator Magang',
+              levelTitle: 'Calon Operator',
               completedMissions: {},
               preTestScore: undefined,
               postTestScore: undefined,
@@ -571,6 +597,11 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   };
 
   const resetAllDemoData = () => {
+    localStorage.removeItem('silimbah_app_state_v1_1_users');
+    localStorage.removeItem('silimbah_app_state_v1_1_operators');
+    localStorage.removeItem('silimbah_app_state_v1_1_certificates');
+    localStorage.removeItem('silimbah_app_state_v1_1_facilities');
+    localStorage.removeItem('silimbah_app_state_v1_1_alert_logs');
     localStorage.removeItem(`${STORAGE_KEY}_users`);
     localStorage.removeItem(`${STORAGE_KEY}_operators`);
     localStorage.removeItem(`${STORAGE_KEY}_certificates`);
@@ -580,6 +611,30 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     setOperators(INITIAL_OPERATORS);
     setCertificates(INITIAL_CERTIFICATES);
     setFacilities(INITIAL_FACILITIES);
+    setAlertLogs([
+      {
+        id: 'log_init_1',
+        timestamp: '2026-10-25 14:22',
+        userId: 'usr_peserta_lengkap',
+        userName: 'Agus Santoso',
+        missionId: 'BW-3',
+        alertCode: 'AL-01',
+        actionTaken: 'Jadwalkan penyedotan truk tinja berizin',
+        isCorrect: true,
+        responseTimeSeconds: 12,
+      },
+      {
+        id: 'log_init_2',
+        timestamp: '2026-10-25 15:05',
+        userId: 'usr_peserta_extra2',
+        userName: 'Dian Permata',
+        missionId: 'BW-3',
+        alertCode: 'AL-01',
+        actionTaken: 'Clear manual tanpa aksi',
+        isCorrect: false,
+        responseTimeSeconds: 45,
+      },
+    ]);
     setCurrentUserId('usr_peserta_lengkap');
     setActiveScreen('mission_map');
     setActiveMissionId('BW-4');

@@ -179,7 +179,7 @@ export interface Certificate {
   operatorType: OperatorType;
   track: LearningTrack;
   finalScore: number;
-  predicate: 'Lulus' | 'Lulus, Sangat Baik' | 'Lulus, Dengan Pujian';
+  predicate: 'Lulus Baik' | 'Lulus Sangat Baik' | 'Lulus Dengan Pujian';
   finalLevelTitle: string;
   issueDate: string;
   status: 'berlaku' | 'dicabut';

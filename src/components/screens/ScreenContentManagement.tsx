@@ -42,7 +42,7 @@ export const ScreenContentManagement: React.FC = () => {
       question: newQuestionText,
       options: [newOptionA, newOptionB, newOptionC, newOptionD],
       correctIndex: newCorrectIndex,
-      explanation: newExplanation || 'Kunci jawaban mengacu pada regulasi baku mutu nasional.',
+      explanation: newExplanation || 'Kunci jawaban mengacu pada regulasi baku mutu Permen LHK P.68/2016.',
     };
 
     setQuestionList([newQ, ...questionList]);

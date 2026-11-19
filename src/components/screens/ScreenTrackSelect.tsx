@@ -68,7 +68,7 @@ export const ScreenTrackSelect: React.FC = () => {
         'Menguasai seluruh 5 tingkatan Black Water & 5 tingkatan Grey Water',
         'Urutan belajar fleksibel antar modul BW dan GW',
         'Akses eksklusif 3 Misi Terpadu: INT-1, INT-2, dan INT-3',
-        'Peluang perolehan XP tertinggi (hingga 3.400 XP) & Gelar Ahli Sanitasi',
+        'Peluang perolehan XP tertinggi (hingga 3.400 XP) & Gelar Operator Utama',
         'Piagam Lengkap Terpadu bernilai kompetensi menyeluruh',
       ],
     },
