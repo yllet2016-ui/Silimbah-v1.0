@@ -1,0 +1,965 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cetak Biru Desain Pre-Development &amp; Narasi Alur Belajar SiLimbah (14 Halaman Lengkap Sesuai PRD)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #0a0f1d;
+      --card-dark: #131c31;
+      --card-inner: #0d1527;
+      --border-dark: #223254;
+      --primary: #10b981;
+      --primary-hover: #059669;
+      --teal-brand: #0d9488;
+      --accent-cyan: #06b6d4;
+      --accent-amber: #f59e0b;
+      --accent-rose: #f43f5e;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      line-height: 1.6;
+      padding: 0;
+    }
+
+    .container {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 36px 24px 100px;
+    }
+
+    header {
+      border-bottom: 1px solid var(--border-dark);
+      padding-bottom: 28px;
+      margin-bottom: 36px;
+    }
+
+    .brand-logo-container {
+      display: inline-flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 20px;
+      text-decoration: none;
+    }
+
+    .brand-logo-badge {
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #0d9488 0%, #047857 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 14px rgba(13, 148, 136, 0.4);
+    }
+
+    .brand-logo-text { display: flex; flex-direction: column; }
+    .brand-logo-title {
+      font-size: 1.65rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: #ffffff;
+      line-height: 1.1;
+    }
+    .brand-logo-sub {
+      font-size: 0.82rem;
+      color: #38bdf8;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+    }
+
+    .badge-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(16, 185, 129, 0.15);
+      color: #34d399;
+      border: 1px solid rgba(16, 185, 129, 0.35);
+      padding: 5px 14px;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+    }
+
+    h1 {
+      font-size: 2.3rem;
+      font-weight: 800;
+      letter-spacing: -0.025em;
+      color: #ffffff;
+      margin-bottom: 12px;
+      line-height: 1.25;
+    }
+
+    .subtitle {
+      font-size: 1.05rem;
+      color: var(--text-muted);
+      max-width: 950px;
+      line-height: 1.65;
+    }
+
+    .download-panel {
+      background: linear-gradient(135deg, #17223b 0%, #0c1427 100%);
+      border: 1px solid #293d66;
+      border-radius: 20px;
+      padding: 28px;
+      margin-bottom: 44px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.45);
+    }
+
+    .download-panel h2 {
+      font-size: 1.3rem;
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .download-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 12px;
+      margin-top: 20px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 11px 16px;
+      border-radius: 12px;
+      font-size: 0.86rem;
+      font-weight: 700;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      cursor: pointer;
+      border: none;
+      text-align: center;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      color: #022c22;
+      box-shadow: 0 4px 15px rgba(16, 185, 129, 0.35);
+    }
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(16, 185, 129, 0.5);
+      color: #ffffff;
+    }
+
+    .btn-secondary {
+      background: #1e293b;
+      color: #f1f5f9;
+      border: 1px solid #334155;
+    }
+    .btn-secondary:hover {
+      background: #334155;
+      color: #ffffff;
+      transform: translateY(-2px);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: #38bdf8;
+      border: 1px solid rgba(56, 189, 248, 0.45);
+    }
+    .btn-outline:hover {
+      background: rgba(56, 189, 248, 0.12);
+      border-color: #38bdf8;
+    }
+
+    .section-card {
+      background: var(--card-dark);
+      border: 1px solid var(--border-dark);
+      border-radius: 20px;
+      padding: 32px;
+      margin-bottom: 44px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+    }
+
+    .section-title {
+      font-size: 1.45rem;
+      font-weight: 800;
+      color: #ffffff;
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .section-tag {
+      font-size: 0.78rem;
+      background: #1e293b;
+      padding: 4px 10px;
+      border-radius: 8px;
+      color: #38bdf8;
+      font-family: 'JetBrains Mono', monospace;
+      border: 1px solid #334155;
+    }
+
+    .mockup-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-bottom: 18px;
+      background: var(--card-inner);
+      padding: 16px 20px;
+      border-radius: 14px;
+      border: 1px solid var(--border-dark);
+    }
+
+    .mockup-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #38bdf8;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .mockup-image-frame {
+      border: 2px solid #2a3d66;
+      border-radius: 16px;
+      overflow: hidden;
+      background: #020617;
+      margin-bottom: 24px;
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.6);
+    }
+
+    .mockup-image-frame img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .narasi-box {
+      background: linear-gradient(180deg, #0d1527 0%, #0a1120 100%);
+      border: 1px solid #223254;
+      border-left: 4px solid #10b981;
+      border-radius: 12px;
+      padding: 22px;
+      margin-bottom: 22px;
+      font-size: 0.94rem;
+      line-height: 1.7;
+    }
+
+    .narasi-box h4 {
+      color: #34d399;
+      font-size: 1rem;
+      font-weight: 800;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    table.matrix-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 18px;
+      font-size: 0.88rem;
+    }
+    table.matrix-table th, table.matrix-table td {
+      border: 1px solid var(--border-dark);
+      padding: 12px 16px;
+      text-align: left;
+    }
+    table.matrix-table th {
+      background: #0d1527;
+      color: #38bdf8;
+      font-weight: 700;
+    }
+    table.matrix-table tr:nth-child(even) {
+      background: rgba(13, 21, 39, 0.5);
+    }
+
+    @media print {
+      body { background: #ffffff !important; color: #000000 !important; }
+      .container { max-width: 100% !important; padding: 0 !important; }
+      .download-panel, .btn { display: none !important; }
+      .section-card {
+        background: #ffffff !important;
+        border: 1px solid #ccc !important;
+        color: #000 !important;
+        page-break-after: always;
+        break-after: page;
+        padding: 20px !important;
+        margin-bottom: 0 !important;
+      }
+      h1, h2, h3, .section-title, .mockup-title { color: #000 !important; }
+      .narasi-box {
+        background: #f8fafc !important;
+        border-color: #cbd5e1 !important;
+        border-left-color: #10b981 !important;
+        color: #0f172a !important;
+      }
+      .mockup-image-frame { border: 1px solid #ccc !important; box-shadow: none !important; }
+      table.matrix-table th { background: #e2e8f0 !important; color: #0f172a !important; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <header>
+      <div class="brand-logo-container">
+        <div class="brand-logo-badge">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M7 16.3c2.2 0 4-1.83 4-4.05 0-1.16-.57-2.26-1.71-3.19S7.29 6.75 7 5.3c-.29 1.45-1.14 2.84-2.29 3.76S3 11.1 3 12.25c0 2.22 1.8 4.05 4 4.05z"></path>
+            <path d="M12.56 6.6A10.97 10.97 0 0 0 14 3.02c.5 2.5 2 4.9 4 6.5s3 3.5 3 5.5a6.98 6.98 0 0 1-11.91 4.97"></path>
+          </svg>
+        </div>
+        <div class="brand-logo-text">
+          <span class="brand-logo-title">SiLimbah</span>
+          <span class="brand-logo-sub">Air Limbah Domestik · Standar Permen LHK No. 68/2016</span>
+        </div>
+      </div>
+
+      <div class="badge-pill">
+        DOKUMEN RESMI PRE-DEVELOPMENT UX BLUEPRINT · 14 HALAMAN LENGKAP PRD
+      </div>
+      <h1>Cetak Biru Desain &amp; Narasi Alur Belajar SiLimbah</h1>
+      <p class="subtitle">
+        Dokumen spesifikasi rancangan antarmuka visual (<em>Pre-Development Mockup</em>) yang disusun sebanyak <strong>14 Halaman Terstruktur</strong> berdasarkan <strong>Product Requirement Document (PRD) SiLimbah</strong>. Seluruh logo telah diseragamkan dengan prototipe resmi (ikon <em>twin droplets</em> pada lencana toska-zamrud), indeks berkas berurutan murni <strong>01 s.d. 14</strong> tanpa duplikasi, serta dilengkapi narasi mendalam yang menjelaskan cara memahami setiap mockup dan alur operasionalnya.
+      </p>
+    </header>
+
+    <!-- PUSAT UNDUHAN 14 BERKAS MOCKUP -->
+    <div class="download-panel">
+      <h2>Pusat Unduhan Mockup Resmi (14 Halaman Terstruktur)</h2>
+      <p style="color: var(--text-muted); font-size: 0.92rem;">
+        Seluruh berkas visual disimpan dengan indeks berurutan 01 s.d. 14 (bebas dari penomoran ganda). Anda dapat mengunduh sekaligus dalam 1 paket ZIP (7.0 MB) atau mengunduh per lembar resolusi tinggi di bawah ini:
+      </p>
+      
+      <div class="download-grid">
+        <a href="/mockups/PAKET_MOCKUP_RESMI_SILIMBAH.zip" download="PAKET_MOCKUP_RESMI_SILIMBAH.zip" class="btn btn-primary" style="grid-column: 1 / -1;">
+          Unduh Semua 14 Mockup Resmi + Dokumen (Paket ZIP 7.0 MB)
+        </a>
+        <a href="/mockups/01_master_blueprint_alur_belajar_silimbah.jpg" download class="btn btn-secondary">01. Master Blueprint Alur Belajar</a>
+        <a href="/mockups/02_mockup_autentikasi_dan_multi_role.jpg" download class="btn btn-secondary">02. Login Multi-Role &amp; 10 Akun Demo</a>
+        <a href="/mockups/03_mockup_pemilihan_jalur_belajar.jpg" download class="btn btn-secondary">03. Pemilihan Jalur (BW/GW/IPLT)</a>
+        <a href="/mockups/04_mockup_pretest_evaluasi_awal.jpg" download class="btn btn-secondary">04. Pre-Test Evaluasi Diagnostik</a>
+        <a href="/mockups/05_mockup_peta_misi_11_simpul_gamifikasi.jpg" download class="btn btn-secondary">05. Peta Misi 11 Simpul Gamifikasi</a>
+        <a href="/mockups/06_mockup_modul_teori_dan_regulasi.jpg" download class="btn btn-secondary">06. Modul Teori &amp; Baku Mutu</a>
+        <a href="/mockups/07_mockup_drawer_briefing_dan_sop.jpg" download class="btn btn-secondary">07. Drawer Briefing &amp; SOP Misi</a>
+        <a href="/mockups/08_mockup_ruang_simulasi_scada_normal.jpg" download class="btn btn-secondary">08. SCADA 3-Zona Operasi Normal</a>
+        <a href="/mockups/09_mockup_ruang_simulasi_scada_darurat.jpg" download class="btn btn-secondary">09. SCADA Mitigasi Alarm AL-04</a>
+        <a href="/mockups/10_mockup_debriefing_skor_dan_formula.jpg" download class="btn btn-secondary">10. Debriefing Formula 40/30/30</a>
+        <a href="/mockups/11_mockup_posttest_dan_ngain_kompetensi.jpg" download class="btn btn-secondary">11. Post-Test &amp; Analisis N-Gain</a>
+        <a href="/mockups/12_mockup_piagam_kompetensi_qr_code.jpg" download class="btn btn-secondary">12. Piagam Digital Ber-QR Code</a>
+        <a href="/mockups/13_mockup_portal_verifikasi_publik.jpg" download class="btn btn-secondary">13. Portal Verifikasi Publik QR</a>
+        <a href="/mockups/14_mockup_dashboard_supervisor_dan_admin.jpg" download class="btn btn-secondary">14. Dashboard Supervisor &amp; Admin</a>
+        <button onclick="window.print()" class="btn btn-outline" style="grid-column: 1 / -1;">
+          Cetak / Simpan Sebagai PDF 14 Halaman
+        </button>
+      </div>
+    </div>
+
+    <!-- HALAMAN 01 -->
+    <div class="section-card">
+      <div class="section-title">
+        <span>Halaman 01 / 14: Master Blueprint Alur Belajar & Penggunaan Aplikasi</span>
+        <span class="section-tag">01_master_blueprint_alur_belajar_silimbah.jpg</span>
+      </div>
+
+      <div class="narasi-box">
+        <h4>Narasi Penjelasan &amp; Cara Memahami Mockup 01:</h4>
+        
+        <p>Mockup ini merupakan <em>master architecture blueprint</em> yang dirancang sebelum pengkodean dimulai guna memetakan alur belajar pengguna dari ujung ke ujung secara runut. Mengacu pada PRD, proses pembelajaran dirancang tidak langsung melempar peserta ke ruang simulasi mesin yang berisiko, melainkan melewati 5 gerbang kompetensi terstruktur:</p>
+        <p style="margin-top: 8px;">
+          <strong>(1) Gerbang Autentikasi &amp; Pemilihan Jalur:</strong> Memilih salah satu dari 10 profil demo PRD dan menentukan kurikulum fokus (Black Water vs Grey Water vs Terpadu IPLT).<br>
+          <strong>(2) Gerbang Pre-Test Diagnostik:</strong> Mengukur kompetensi awal melalui 5 soal pilihan ganda acak. Nilai 100/100 langsung menganugerahkan 3 Bintang Emas penuh (⭐⭐⭐).<br>
+          <strong>(3) Gerbang Peta Misi Gamifikasi:</strong> Menelusuri jalur pipa 11 simpul misi dengan syarat Kriteria Ketuntasan Minimal (KKM 75/100).<br>
+          <strong>(4) Gerbang Ruang Kendali SCADA:</strong> Praktik eksekusi SOP instalasi air limbah dengan telemetri sensor real-time dan mitigasi alarm darurat (AL-01 s.d AL-15).<br>
+          <strong>(5) Gerbang Evaluasi Akhir &amp; Piagam QR:</strong> Perhitungan formula transparan 40/30/30, analisis N-Gain pasca-uji, serta penerbitan piagam kompetensi digital ber-QR code.
+        </p>
+      </div>
+
+      <div class="mockup-header">
+        <div class="mockup-title">
+          <span>Tampilan Visual Papan Desain 01 (Master Architecture Blueprint (5 Gerbang Kompetensi))</span>
+        </div>
+        <a href="/mockups/01_master_blueprint_alur_belajar_silimbah.jpg" download class="btn btn-secondary" style="padding: 7px 16px; font-size: 0.84rem;">
+          Unduh File Gambar 01 (JPG)
+        </a>
+      </div>
+
+      <div class="mockup-image-frame">
+        <img src="/mockups/01_master_blueprint_alur_belajar_silimbah.jpg" alt="Halaman 01 / 14: Master Blueprint Alur Belajar & Penggunaan Aplikasi">
+      </div>
+    </div>
+
+    <!-- HALAMAN 02 -->
+    <div class="section-card">
+      <div class="section-title">
+        <span>Halaman 02 / 14: Layar Autentikasi, Multi-Role & Pemilih 10 Akun Demo PRD</span>
+        <span class="section-tag">02_mockup_autentikasi_dan_multi_role.jpg</span>
+      </div>
+
+      <div class="narasi-box">
+        <h4>Narasi Penjelasan &amp; Cara Memahami Mockup 02:</h4>
+        
+        <p>Mockup ini merancang pintu masuk utama aplikasi yang mendukung sistem multi-peran (Role-Based Access Control) sesuai PRD Bagian 7.2 dan Halaman 20. Untuk memfasilitasi pengujian cepat oleh dosen penguji, asesor dinas, dan mahasiswa, antarmuka menyediakan dua metode login:</p>
+        <ul style="padding-left: 20px; margin-top: 6px;">
+          <li><strong>Formulir Kredensial Standar:</strong> Masuk menggunakan alamat surel dan kata sandi mandiri.</li>
+          <li><strong>Panel 1-Klik 10 Akun Demo Resmi PRD:</strong> Tiga kartu peran utama terpampang di bawah formulir: <em>Operator Lapangan</em> (Agus Santoso / Ratna Dewi), <em>Supervisor Wilayah UPTD</em> (UPTD PALD Kab. Sukamaju), dan <em>Super Admin Global</em> (Admin Pusat). Setiap kartu menampilkan avatar, nama instansi, serta status lisensi aktif.</li>
+        </ul>
+      </div>
+
+      <div class="mockup-header">
+        <div class="mockup-title">
+          <span>Tampilan Visual Papan Desain 02 (RBAC Multi-Role & 10 Persona Uji (PRD Hal 20))</span>
+        </div>
+        <a href="/mockups/02_mockup_autentikasi_dan_multi_role.jpg" download class="btn btn-secondary" style="padding: 7px 16px; font-size: 0.84rem;">
+          Unduh File Gambar 02 (JPG)
+        </a>
+      </div>
+
+      <div class="mockup-image-frame">
+        <img src="/mockups/02_mockup_autentikasi_dan_multi_role.jpg" alt="Halaman 02 / 14: Layar Autentikasi, Multi-Role & Pemilih 10 Akun Demo PRD">
+      </div>
+    </div>
+
+    <!-- HALAMAN 03 -->
+    <div class="section-card">
+      <div class="section-title">
+        <span>Halaman 03 / 14: Layar Pemilihan Jalur Belajar Spesialisasi Limbah</span>
+        <span class="section-tag">03_mockup_pemilihan_jalur_belajar.jpg</span>
+      </div>
+
+      <div class="narasi-box">
+        <h4>Narasi Penjelasan &amp; Cara Memahami Mockup 03:</h4>
+        
+        <p>Mockup ini menerapkan klausul fundamental PRD mengenai pemisahan sumber fisik air limbah rumah tangga. Peserta dihadapkan pada 3 kartu kurikulum interaktif:</p>
+        <ul style="padding-left: 20px; margin-top: 6px;">
+          <li><strong>Jalur Black Water (Toilet &amp; Tangki Septik SNI 2398:2017):</strong> Fokus pada limbah kloset berbeban organik tinggi, patogen E. coli, akumulasi lumpur tinja dasar, dan bahaya gas beracun (H2S &amp; CH4).</li>
+          <li><strong>Jalur Grey Water (Dapur &amp; Biofilter SNI 8153:2015):</strong> Fokus pada air buangan non-kakus dari bak cuci piring (lemak nabati/hewani), pemisahan grease trap, serta biofilter anaerob-aerob dan rawa buatan (constructed wetland).</li>
+          <li><strong>Jalur Terpadu &amp; IPLT (Permen LHK No. 68/2016):</strong> Kurikulum komprehensif skala kawasan komunal dan Instalasi Pengolahan Lumpur Tinja (IPLT).</li>
+        </ul>
+      </div>
+
+      <div class="mockup-header">
+        <div class="mockup-title">
+          <span>Tampilan Visual Papan Desain 03 (Pemisahan Black Water (SNI 2398) & Grey Water (SNI 8153))</span>
+        </div>
+        <a href="/mockups/03_mockup_pemilihan_jalur_belajar.jpg" download class="btn btn-secondary" style="padding: 7px 16px; font-size: 0.84rem;">
+          Unduh File Gambar 03 (JPG)
+        </a>
+      </div>
+
+      <div class="mockup-image-frame">
+        <img src="/mockups/03_mockup_pemilihan_jalur_belajar.jpg" alt="Halaman 03 / 14: Layar Pemilihan Jalur Belajar Spesialisasi Limbah">
+      </div>
+    </div>
+
+    <!-- HALAMAN 04 -->
+    <div class="section-card">
+      <div class="section-title">
+        <span>Halaman 04 / 14: Layar Pre-Test Evaluasi Diagnostik Awal</span>
+        <span class="section-tag">04_mockup_pretest_evaluasi_awal.jpg</span>
+      </div>
+
+      <div class="narasi-box">
+        <h4>Narasi Penjelasan &amp; Cara Memahami Mockup 04:</h4>
+        
+        <p>Mockup ini merancang layar asesmen diagnostik yang wajib dilalui sebelum peta misi terbuka. Elemen antarmuka dirancang untuk kenyamanan ujian:</p>
+        <ul style="padding-left: 20px; margin-top: 6px;">
+          <li><strong>Header Bar Ujian:</strong> Memuat penghitung waktu mundur (countdown timer 10:00), indikator nomor soal aktif (Soal 2 dari 5), dan bilah progres persentase (40%).</li>
+          <li><strong>Kartu Soal Standar Baku Mutu:</strong> Menampilkan pertanyaan studi kasus teknis mengenai ambang batas maksimum BOD dan TSS menurut Permen LHK No. 68/2016 dengan 4 opsi radio.</li>
+          <li><strong>Tombol Bantuan Petunjuk (Hint):</strong> Peserta dapat meminta petunjuk teknis dengan konsekuensi penalti -5 poin skor akhir.</li>
+          <li><strong>Transparansi Hasil:</strong> Jika peserta meraih nilai 100/100, sistem secara tegas menganugerahkan 3 Bintang Emas Penuh (⭐⭐⭐) sebagai kunci pembuka gerbang peta misi.</li>
+        </ul>
+      </div>
+
+      <div class="mockup-header">
+        <div class="mockup-title">
+          <span>Tampilan Visual Papan Desain 04 (Asesmen Diagnostik, Timer & Bintang Kelulusan (PRD Bab 4))</span>
+        </div>
+        <a href="/mockups/04_mockup_pretest_evaluasi_awal.jpg" download class="btn btn-secondary" style="padding: 7px 16px; font-size: 0.84rem;">
+          Unduh File Gambar 04 (JPG)
+        </a>
+      </div>
+
+      <div class="mockup-image-frame">
+        <img src="/mockups/04_mockup_pretest_evaluasi_awal.jpg" alt="Halaman 04 / 14: Layar Pre-Test Evaluasi Diagnostik Awal">
+      </div>
+    </div>
+
+    <!-- HALAMAN 05 -->
+    <div class="section-card">
+      <div class="section-title">
+        <span>Halaman 05 / 14: Layar Peta Misi Gamifikasi 11 Simpul Pipa Industri</span>
+        <span class="section-tag">05_mockup_peta_misi_11_simpul_gamifikasi.jpg</span>
+      </div>
+
+      <div class="narasi-box">
+        <h4>Narasi Penjelasan &amp; Cara Memahami Mockup 05:</h4>
+        
+        <p>Mockup ini adalah inti dari konsep kurikulum gamifikasi SiLimbah. Menghindari tampilan daftar teks biasa, silabus disajikan sebagai jaringan pipa transmisi limbah dengan 11 simpul bertingkat:</p>
+        <ul style="padding-left: 20px; margin-top: 6px;">
+          <li><strong>Jalur Atas (BW-1 s.d BW-5):</strong> Tahapan kompetensi Black Water dari pengenalan tangki septik, perakitan SNI 2398:2017, penyedotan lumpur L2T2, pengeringan lumpur IPLT, hingga krisis banjir lumpur.</li>
+          <li><strong>Jalur Bawah (GW-1 s.d GW-5):</strong> Tahapan kompetensi Grey Water dari penangkap lemak (grease trap), pengoperasian biofilter anaerob-aerob, filtrasi lahan basah (wetland), hingga klorinasi pemanfaatan kembali air.</li>
+          <li><strong>Simpul Muara (INT-1):</strong> Misi integrasi terpadu kawasan permukiman dengan bio-indikator kolam ikan hidup.</li>
+          <li><strong>Indikator Kelulusan KKM 75:</strong> Setiap simpul menampilkan lencana syarat ketuntasan minimal nilai 75 serta visual 3 bintang pencapaian.</li>
+        </ul>
+      </div>
+
+      <div class="mockup-header">
+        <div class="mockup-title">
+          <span>Tampilan Visual Papan Desain 05 (11 Simpul Misi Gamifikasi & Ambang Batas KKM 75 (PRD Hal 8))</span>
+        </div>
+        <a href="/mockups/05_mockup_peta_misi_11_simpul_gamifikasi.jpg" download class="btn btn-secondary" style="padding: 7px 16px; font-size: 0.84rem;">
+          Unduh File Gambar 05 (JPG)
+        </a>
+      </div>
+
+      <div class="mockup-image-frame">
+        <img src="/mockups/05_mockup_peta_misi_11_simpul_gamifikasi.jpg" alt="Halaman 05 / 14: Layar Peta Misi Gamifikasi 11 Simpul Pipa Industri">
+      </div>
+    </div>
+
+    <!-- HALAMAN 06 -->
+    <div class="section-card">
+      <div class="section-title">
+        <span>Halaman 06 / 14: Layar Modul Teori & Perpustakaan Baku Mutu Lingkungan</span>
+        <span class="section-tag">06_mockup_modul_teori_dan_regulasi.jpg</span>
+      </div>
+
+      <div class="narasi-box">
+        <h4>Narasi Penjelasan &amp; Cara Memahami Mockup 06:</h4>
+        
+        <p>Mockup ini merancang repositori pengetahuan ilmiah yang menjadi landasan teoritis operator sebelum menjalankan simulasi mekanis. Sesuai Permen LHK No. 68/2016, antarmuka menyajikan 8 kartu parameter interaktif:</p>
+        <ul style="padding-left: 20px; margin-top: 6px;">
+          <li><strong>Parameter Baku Mutu Kritis:</strong> pH (6-9), BOD (≤30 mg/L), COD (≤100 mg/L), TSS (≤30 mg/L), Minyak &amp; Lemak (≤5 mg/L), Amoniak (≤10 mg/L), Total Coliform (≤3000 jumlah/100mL).</li>
+          <li><strong>Formula &amp; Skema Kerja:</strong> Masing-masing kartu dilengkapi rumus kinetika reaksi mikroba, ilustrasi sedimentasi gravitasi, serta skema aerasi biofilter sarang tawon.</li>
+        </ul>
+      </div>
+
+      <div class="mockup-header">
+        <div class="mockup-title">
+          <span>Tampilan Visual Papan Desain 06 (Standar Baku Mutu Permen LHK No. 68/2016 (PRD Bab 2))</span>
+        </div>
+        <a href="/mockups/06_mockup_modul_teori_dan_regulasi.jpg" download class="btn btn-secondary" style="padding: 7px 16px; font-size: 0.84rem;">
+          Unduh File Gambar 06 (JPG)
+        </a>
+      </div>
+
+      <div class="mockup-image-frame">
+        <img src="/mockups/06_mockup_modul_teori_dan_regulasi.jpg" alt="Halaman 06 / 14: Layar Modul Teori & Perpustakaan Baku Mutu Lingkungan">
+      </div>
+    </div>
+
+    <!-- HALAMAN 07 -->
+    <div class="section-card">
+      <div class="section-title">
+        <span>Halaman 07 / 14: Layar Drawer Briefing Misi & Instruksi SOP Operasional</span>
+        <span class="section-tag">07_mockup_drawer_briefing_dan_sop.jpg</span>
+      </div>
+
+      <div class="narasi-box">
+        <h4>Narasi Penjelasan &amp; Cara Memahami Mockup 07:</h4>
+        
+        <p>Mockup ini menggambarkan interaksi transisi saat peserta mengeklik simpul misi di peta. Alih-alih berpindah halaman secara kasar, sebuah <em>slide-out drawer</em> elegan meluncur keluar dari sisi kanan layar:</p>
+        <ul style="padding-left: 20px; margin-top: 6px;">
+          <li><strong>Kriteria Kualitas Target:</strong> Merinci batas ketat efluen yang harus dicapai dalam misi tersebut (misal: BOD &lt; 30 mg/L dan TSS &lt; 30 mg/L).</li>
+          <li><strong>Daftar Periksa Alur SOP (Checklist):</strong> Panduan langkah baku yang harus dieksekusi operator di ruang kendali.</li>
+          <li><strong>Informasi Durasi &amp; KKM:</strong> Estimasi durasi (5 menit), batas kelulusan KKM (75/100), serta tombol hijau mencolok <em>'Mulai Simulasi SCADA'</em>.</li>
+        </ul>
+      </div>
+
+      <div class="mockup-header">
+        <div class="mockup-title">
+          <span>Tampilan Visual Papan Desain 07 (Slide-out Briefing Drawer & SOP Checklist (PRD Bab 5))</span>
+        </div>
+        <a href="/mockups/07_mockup_drawer_briefing_dan_sop.jpg" download class="btn btn-secondary" style="padding: 7px 16px; font-size: 0.84rem;">
+          Unduh File Gambar 07 (JPG)
+        </a>
+      </div>
+
+      <div class="mockup-image-frame">
+        <img src="/mockups/07_mockup_drawer_briefing_dan_sop.jpg" alt="Halaman 07 / 14: Layar Drawer Briefing Misi & Instruksi SOP Operasional">
+      </div>
+    </div>
+
+    <!-- HALAMAN 08 -->
+    <div class="section-card">
+      <div class="section-title">
+        <span>Halaman 08 / 14: Layar Ruang Kendali SCADA 3-Zona — Kondisi Operasi Normal</span>
+        <span class="section-tag">08_mockup_ruang_simulasi_scada_normal.jpg</span>
+      </div>
+
+      <div class="narasi-box">
+        <h4>Narasi Penjelasan &amp; Cara Memahami Mockup 08:</h4>
+        
+        <p>Mockup ini merupakan representasi ruang kendali instalasi IPAL/IPLT dalam kondisi stabil (steady-state) mengadopsi standar industri SCADA 3-zona:</p>
+        <ul style="padding-left: 20px; margin-top: 6px;">
+          <li><strong>Zona 1 (Kiri — Diagram Fisik Tangki Bersekat):</strong> Potongan teknik memperlihatkan kompartemen pengendapan awal, ruang anaerobik 1 dan 2, sekat penahan busa (scum baffle), media sarang tawon biofilter, lapisan karbon aktif, serta pipa aliran balik lumpur (recirculation).</li>
+          <li><strong>Zona 2 (Kanan Atas — Telemetri Efluen Stabil):</strong> 4 jarum meter digital berwarna hijau: BOD 18 mg/L (&lt;30), COD 62 mg/L (&lt;100), TSS 19 mg/L (&lt;30), dan pH 7.2 (6-9).</li>
+          <li><strong>Zona 3 (Kanan Bawah — Kontrol Aktuator):</strong> Sakelar kendali Blower Aerasi 1 (Running), Blower Cadangan (Standby), Pompa Umpan (Running), serta status katup hidrolik.</li>
+        </ul>
+      </div>
+
+      <div class="mockup-header">
+        <div class="mockup-title">
+          <span>Tampilan Visual Papan Desain 08 (SCADA 3-Zona Kondisi Stabil & Telemetri Normal (PRD Bab 6.1))</span>
+        </div>
+        <a href="/mockups/08_mockup_ruang_simulasi_scada_normal.jpg" download class="btn btn-secondary" style="padding: 7px 16px; font-size: 0.84rem;">
+          Unduh File Gambar 08 (JPG)
+        </a>
+      </div>
+
+      <div class="mockup-image-frame">
+        <img src="/mockups/08_mockup_ruang_simulasi_scada_normal.jpg" alt="Halaman 08 / 14: Layar Ruang Kendali SCADA 3-Zona — Kondisi Operasi Normal">
+      </div>
+    </div>
+
+    <!-- HALAMAN 09 -->
+    <div class="section-card">
+      <div class="section-title">
+        <span>Halaman 09 / 14: Layar Ruang Kendali SCADA — Penanganan Krisis & Alarm Darurat</span>
+        <span class="section-tag">09_mockup_ruang_simulasi_scada_darurat.jpg</span>
+      </div>
+
+      <div class="narasi-box">
+        <h4>Narasi Penjelasan &amp; Cara Memahami Mockup 09:</h4>
+        
+        <p>Mockup ini merancang dinamika saat skenario krisis lingkungan dipicu oleh sistem simulasi (PRD Bagian 6.2). Menguji kecepatan dan ketepatan operator dalam mencegah pencemaran badan air:</p>
+        <ul style="padding-left: 20px; margin-top: 6px;">
+          <li><strong>Banner Peringatan Darurat Merah:</strong> Kartu merah menyala menampilkan <em>EMERGENCY ALERT AL-04 (Beban Organik Shock Loading)</em> dengan timer hitung mundur waktu respons darurat (60 detik).</li>
+          <li><strong>Telemetri Kritis:</strong> Angka BOD melonjak ke 48 mg/L (melewati batas baku mutu 30 mg/L) memicu alarm audio-visual.</li>
+          <li><strong>Panel SOP Mitigasi Terarah:</strong> Menampilkan 4 tombol aksi berurutan: (1) Acknowledge Alarm, (2) Buka Katup Ekualisasi, (3) Aktifkan Blower Tambahan untuk Oksigenasi, dan (4) Alirkan ke Tangki Cadangan.</li>
+          <li><strong>Protokol Manual Clear:</strong> Peserta yang mencoba mematikan alarm secara paksa tanpa menyelesaikan SOP dikenai sanksi penalti -5 poin dan alarm akan dipicu kembali otomatis.</li>
+        </ul>
+      </div>
+
+      <div class="mockup-header">
+        <div class="mockup-title">
+          <span>Tampilan Visual Papan Desain 09 (Emergency Alert AL-04 & Protokol SOP Darurat (PRD Bab 6.2))</span>
+        </div>
+        <a href="/mockups/09_mockup_ruang_simulasi_scada_darurat.jpg" download class="btn btn-secondary" style="padding: 7px 16px; font-size: 0.84rem;">
+          Unduh File Gambar 09 (JPG)
+        </a>
+      </div>
+
+      <div class="mockup-image-frame">
+        <img src="/mockups/09_mockup_ruang_simulasi_scada_darurat.jpg" alt="Halaman 09 / 14: Layar Ruang Kendali SCADA — Penanganan Krisis & Alarm Darurat">
+      </div>
+    </div>
+
+    <!-- HALAMAN 10 -->
+    <div class="section-card">
+      <div class="section-title">
+        <span>Halaman 10 / 14: Layar Debriefing Skor 100/100 & Formula Bobot 40/30/30</span>
+        <span class="section-tag">10_mockup_debriefing_skor_dan_formula.jpg</span>
+      </div>
+
+      <div class="narasi-box">
+        <h4>Narasi Penjelasan &amp; Cara Memahami Mockup 10:</h4>
+        
+        <p>Mockup ini mendefinisikan transparansi sistem asesmen pasca-misi (PRD Bagian 6.4). Menghilangkan kesan penilaian subjektif dengan menampilkan rincian matematis formula:</p>
+        <ul style="padding-left: 20px; margin-top: 6px;">
+          <li><strong>Indikator Skor &amp; Bintang Penuh:</strong> Menampilkan angka besar <strong>100 / 100</strong> dengan <strong>3 Bintang Emas Penuh (⭐⭐⭐)</strong> dan lencana kelulusan.</li>
+          <li><strong>Rincian Tiga Komponen Formula PRD:</strong>
+            <br>• Kartu 1: <strong>Akurasi Tindakan SOP: 40/40</strong> (ketepatan prosedur penanganan instalasi).
+            <br>• Kartu 2: <strong>Kecepatan Respons Alert: 30/30</strong> (mitigasi diselesaikan sebelum batas waktu darurat).
+            <br>• Kartu 3: <strong>Kepatuhan Efluen Permen LHK: 30/30</strong> (seluruh parameter air olahan memenuhi baku mutu).
+          </li>
+          <li><strong>Kalkulasi XP &amp; Umpan Balik Ahli:</strong> Menampilkan rincian penambahan XP dasar, bonus kecepatan tanpa petunjuk, serta saran perbaikan dari praktisi sanitasi.</li>
+        </ul>
+      </div>
+
+      <div class="mockup-header">
+        <div class="mockup-title">
+          <span>Tampilan Visual Papan Desain 10 (Formula Kelulusan 40% SOP + 30% Respons + 30% Efluen (PRD Bab 6.4))</span>
+        </div>
+        <a href="/mockups/10_mockup_debriefing_skor_dan_formula.jpg" download class="btn btn-secondary" style="padding: 7px 16px; font-size: 0.84rem;">
+          Unduh File Gambar 10 (JPG)
+        </a>
+      </div>
+
+      <div class="mockup-image-frame">
+        <img src="/mockups/10_mockup_debriefing_skor_dan_formula.jpg" alt="Halaman 10 / 14: Layar Debriefing Skor 100/100 & Formula Bobot 40/30/30">
+      </div>
+    </div>
+
+    <!-- HALAMAN 11 -->
+    <div class="section-card">
+      <div class="section-title">
+        <span>Halaman 11 / 14: Layar Post-Test Evaluasi Akhir & Analisis Peningkatan N-Gain</span>
+        <span class="section-tag">11_mockup_posttest_dan_ngain_kompetensi.jpg</span>
+      </div>
+
+      <div class="narasi-box">
+        <h4>Narasi Penjelasan &amp; Cara Memahami Mockup 11:</h4>
+        
+        <p>Mockup ini merancang layar evaluasi puncak untuk membuktikan efektivitas pembelajaran gamifikasi sesuai metodologi riset ilmiah sanitasi lingkungan (PRD Bagian 4 &amp; 7):</p>
+        <ul style="padding-left: 20px; margin-top: 6px;">
+          <li><strong>Hasil Ujian Akhir (Post-Test):</strong> Menampilkan perolehan nilai 95/100, 3 bintang, dan pembukaan lencana kehormatan <em>'Gemilang'</em>.</li>
+          <li><strong>Grafik Perbandingan N-Gain Score:</strong> Diagram batang membandingkan nilai awal saat Pre-Test (45/100) dengan Post-Test (95/100).</li>
+          <li><strong>Indeks Efektivitas Pembelajaran:</strong> Menghitung indeks <em>Normalized Gain (N-Gain = 0.91)</em> yang masuk ke dalam kategori <strong>Efektivitas Tinggi (High Effectiveness)</strong>, membuktikan penguasaan materi operator meningkat secara signifikan.</li>
+        </ul>
+      </div>
+
+      <div class="mockup-header">
+        <div class="mockup-title">
+          <span>Tampilan Visual Papan Desain 11 (Ujian Akhir Komprehensif & Analisis N-Gain Score (PRD Bab 4 & 7))</span>
+        </div>
+        <a href="/mockups/11_mockup_posttest_dan_ngain_kompetensi.jpg" download class="btn btn-secondary" style="padding: 7px 16px; font-size: 0.84rem;">
+          Unduh File Gambar 11 (JPG)
+        </a>
+      </div>
+
+      <div class="mockup-image-frame">
+        <img src="/mockups/11_mockup_posttest_dan_ngain_kompetensi.jpg" alt="Halaman 11 / 14: Layar Post-Test Evaluasi Akhir & Analisis Peningkatan N-Gain">
+      </div>
+    </div>
+
+    <!-- HALAMAN 12 -->
+    <div class="section-card">
+      <div class="section-title">
+        <span>Halaman 12 / 14: Layar Piagam Digital Kompetensi Resmi Ber-QR Code</span>
+        <span class="section-tag">12_mockup_piagam_kompetensi_qr_code.jpg</span>
+      </div>
+
+      <div class="narasi-box">
+        <h4>Narasi Penjelasan &amp; Cara Memahami Mockup 12:</h4>
+        
+        <p>Mockup ini menyajikan sertifikat kelulusan resmi berstandar institusi pemerintah daerah (PRD Bagian 7.4 &amp; 8):</p>
+        <ul style="padding-left: 20px; margin-top: 6px;">
+          <li><strong>Bingkai Ornamen Klasik &amp; Segel Dinas:</strong> Desain sertifikat formal dengan bordir emas-hijau bertuliskan <em>PIAGAM KOMPETENSI OPERATOR AIR LIMBAH DOMESTIK</em>.</li>
+          <li><strong>Data Personal &amp; Legalitas:</strong> Diberikan kepada <strong>Agus Santoso</strong>, diterbitkan oleh <strong>UPTD PALD Kabupaten Sukamaju</strong>, mengacu pada Permen LHK No. 68 Tahun 2016, nomor registrasi seri <code>SLB/CP/X/2023/1458</code>, tanda tangan basah digital, serta stempel resmi UPTD.</li>
+          <li><strong>QR Code Verifikasi Unik:</strong> Di pojok kanan bawah tersemat kode QR aktif bertuliskan <em>'Pindai untuk Verifikasi Keaslian'</em> yang menautkan langsung ke portal publik.</li>
+        </ul>
+      </div>
+
+      <div class="mockup-header">
+        <div class="mockup-title">
+          <span>Tampilan Visual Papan Desain 12 (Sertifikat Digital Resmi UPTD PALD & QR Code Unik (PRD Bab 7.4 & 8))</span>
+        </div>
+        <a href="/mockups/12_mockup_piagam_kompetensi_qr_code.jpg" download class="btn btn-secondary" style="padding: 7px 16px; font-size: 0.84rem;">
+          Unduh File Gambar 12 (JPG)
+        </a>
+      </div>
+
+      <div class="mockup-image-frame">
+        <img src="/mockups/12_mockup_piagam_kompetensi_qr_code.jpg" alt="Halaman 12 / 14: Layar Piagam Digital Kompetensi Resmi Ber-QR Code">
+      </div>
+    </div>
+
+    <!-- HALAMAN 13 -->
+    <div class="section-card">
+      <div class="section-title">
+        <span>Halaman 13 / 14: Layar Portal Publik Verifikasi Keabsahan Piagam</span>
+        <span class="section-tag">13_mockup_portal_verifikasi_publik.jpg</span>
+      </div>
+
+      <div class="narasi-box">
+        <h4>Narasi Penjelasan &amp; Cara Memahami Mockup 13:</h4>
+        
+        <p>Mockup ini merancang halaman web publik mandiri yang dapat diakses oleh siapapun (termasuk asesor, pimpinan dinas, atau calon pemberi kerja) saat memindai kode QR sertifikat:</p>
+        <ul style="padding-left: 20px; margin-top: 6px;">
+          <li><strong>Lencana Keabsahan Hijau:</strong> Menampilkan simbol perisai centang bertuliskan <em>SERTIFIKAT RESMI TERVERIFIKASI</em> dengan status <em>'Sah &amp; Berlaku'</em>.</li>
+          <li><strong>Penyelarasan Privasi PRD Bagian 7.4:</strong> Data yang ditampilkan hanya mencakup Nama Operator (Agus Santoso), Instansi (UPTD PALD Kab. Sukamaju), Nomor Registrasi, dan Tanggal Terbit. Secara tegas mematuhi regulasi privasi dengan <strong>TIDAK mengekspos</strong> rincian nilai ujian privat ke publik.</li>
+          <li><strong>Desain Responsif:</strong> Menyajikan tampilan desktop dan pratinjau layar ponsel cerdas (mobile responsive) yang ramah dibuka di lokasi lapangan.</li>
+        </ul>
+      </div>
+
+      <div class="mockup-header">
+        <div class="mockup-title">
+          <span>Tampilan Visual Papan Desain 13 (Portal Publik Verifikasi QR & Kepatuhan Privasi (PRD Bab 7.4))</span>
+        </div>
+        <a href="/mockups/13_mockup_portal_verifikasi_publik.jpg" download class="btn btn-secondary" style="padding: 7px 16px; font-size: 0.84rem;">
+          Unduh File Gambar 13 (JPG)
+        </a>
+      </div>
+
+      <div class="mockup-image-frame">
+        <img src="/mockups/13_mockup_portal_verifikasi_publik.jpg" alt="Halaman 13 / 14: Layar Portal Publik Verifikasi Keabsahan Piagam">
+      </div>
+    </div>
+
+    <!-- HALAMAN 14 -->
+    <div class="section-card">
+      <div class="section-title">
+        <span>Halaman 14 / 14: Layar Dashboard Supervisor UPTD & Benchmark Multi-Tenant</span>
+        <span class="section-tag">14_mockup_dashboard_supervisor_dan_admin.jpg</span>
+      </div>
+
+      <div class="narasi-box">
+        <h4>Narasi Penjelasan &amp; Cara Memahami Mockup 14:</h4>
+        
+        <p>Mockup ini melengkapi kebutuhan tata kelola operasional tingkat pengawas dan pimpinan instansi sesuai PRD Halaman 18 dan Bagian 7.3:</p>
+        <ul style="padding-left: 20px; margin-top: 6px;">
+          <li><strong>Header Wilayah &amp; Metrik Utama (KPI):</strong> Tingkat Kelulusan Operator (88.5%), Rata-rata Skor Wilayah (84.2), dan Total Operator Aktif (24 personel).</li>
+          <li><strong>Daftar Pengawasan Khusus (Watchlist Operator - PRD Hal 18):</strong> Secara otomatis menyaring personel yang membutuhkan perhatian pembina, yaitu operator inaktif ≥ 7 hari atau operator yang mengalami kegagalan misi ≥ 3 kali berturut-turut.</li>
+          <li><strong>Analisis Tingkat Kesulitan Misi:</strong> Diagram batang mendeteksi simpul misi mana yang memiliki tingkat kegagalan tertinggi (misal: BW-4 dan GW-3) sehingga supervisor dapat memberikan bimbingan teknis tambahan.</li>
+          <li><strong>Komparasi Lintas Daerah (Multi-Tenant Benchmark):</strong> Membandingkan performa agregat sanitasi antara Kabupaten Sukamaju dengan Kota Metropolitan.</li>
+        </ul>
+      </div>
+
+      <div class="mockup-header">
+        <div class="mockup-title">
+          <span>Tampilan Visual Papan Desain 14 (Panel Pengawasan Supervisor, Watchlist Operator & Benchmark (PRD Hal 18))</span>
+        </div>
+        <a href="/mockups/14_mockup_dashboard_supervisor_dan_admin.jpg" download class="btn btn-secondary" style="padding: 7px 16px; font-size: 0.84rem;">
+          Unduh File Gambar 14 (JPG)
+        </a>
+      </div>
+
+      <div class="mockup-image-frame">
+        <img src="/mockups/14_mockup_dashboard_supervisor_dan_admin.jpg" alt="Halaman 14 / 14: Layar Dashboard Supervisor UPTD & Benchmark Multi-Tenant">
+      </div>
+    </div>
+
+    <!-- MATRIKS KESESUAIAN PRD -->
+    <div class="section-card">
+      <div class="section-title">
+        <span>Matriks Penyelarasan Komprehensif: 14 Halaman Mockup vs Klausul PRD</span>
+        <span class="section-tag">Traceability Matrix 100% Sesuai</span>
+      </div>
+      <p style="color: var(--text-muted); font-size: 0.95rem;">
+        Tabel berikut membuktikan bahwa seluruh 14 halaman mockup telah memetakan setiap persyaratan dalam dokumen PRD secara lengkap:
+      </p>
+
+      <table class="matrix-table">
+        <thead>
+          <tr>
+            <th>No. Lembar Mockup</th>
+            <th>Klausul PRD</th>
+            <th>Ketentuan Teknis Dokumen PRD</th>
+            <th>Implementasi Desain Mockup</th>
+            <th>Status Keselarasan</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Mockup 01</strong></td>
+            <td>PRD Bab 1 &amp; 4</td>
+            <td>5 Siklus Kompetensi Operator Air Limbah Domestik</td>
+            <td>Papan arsitektur alur end-to-end dari login hingga piagam QR</td>
+            <td><span style="color: #34d399; font-weight: 700;">✓ 100% Selaras</span></td>
+          </tr>
+          <tr>
+            <td><strong>Mockup 02</strong></td>
+            <td>PRD Bab 7.2 &amp; Hal 20</td>
+            <td>Multi-Role RBAC &amp; 10 Akun Demo Resmi SiLimbah</td>
+            <td>Form login dan 3 tombol kartu masuk instan akun demo PRD</td>
+            <td><span style="color: #34d399; font-weight: 700;">✓ 100% Selaras</span></td>
+          </tr>
+          <tr>
+            <td><strong>Mockup 03</strong></td>
+            <td>PRD Bab 2 &amp; 3</td>
+            <td>Pemisahan Black Water (SNI 2398) &amp; Grey Water (SNI 8153)</td>
+            <td>3 Kartu kurikulum interaktif dengan ikon instalasi fisik</td>
+            <td><span style="color: #34d399; font-weight: 700;">✓ 100% Selaras</span></td>
+          </tr>
+          <tr>
+            <td><strong>Mockup 04</strong></td>
+            <td>PRD Bab 4 &amp; 5</td>
+            <td>Evaluasi Pre-Test Diagnostik &amp; Standar Permen LHK 68/2016</td>
+            <td>Timer 10 menit, 5 soal acak, hint penalty, dan 3 bintang emas</td>
+            <td><span style="color: #34d399; font-weight: 700;">✓ 100% Selaras</span></td>
+          </tr>
+          <tr>
+            <td><strong>Mockup 05</strong></td>
+            <td>PRD Bab 4 &amp; Hal 8</td>
+            <td>Jalur Gamifikasi 11 Simpul Pipa &amp; Ambang Batas KKM 75</td>
+            <td>Peta pipa interaktif BW-1..5, GW-1..5, INT-1 dengan gembok syarat</td>
+            <td><span style="color: #34d399; font-weight: 700;">✓ 100% Selaras</span></td>
+          </tr>
+          <tr>
+            <td><strong>Mockup 06</strong></td>
+            <td>PRD Bab 2 &amp; Hal 6</td>
+            <td>Modul Teori Baku Mutu Permen LHK No. 68/2016</td>
+            <td>8 Kartu parameter baku mutu (pH, BOD, COD, TSS, Minyak, Amoniak, dsb.)</td>
+            <td><span style="color: #34d399; font-weight: 700;">✓ 100% Selaras</span></td>
+          </tr>
+          <tr>
+            <td><strong>Mockup 07</strong></td>
+            <td>PRD Bab 5 &amp; Hal 10</td>
+            <td>Laci Briefing Misi &amp; Checklist Prosedur SOP</td>
+            <td>Drawer samping kanan dengan target efluen dan tombol mulai</td>
+            <td><span style="color: #34d399; font-weight: 700;">✓ 100% Selaras</span></td>
+          </tr>
+          <tr>
+            <td><strong>Mockup 08</strong></td>
+            <td>PRD Bab 6.1</td>
+            <td>Ruang Kendali SCADA 3-Zona Kondisi Operasi Normal</td>
+            <td>Zona 1 (Tangki bersekat), Zona 2 (Dial BOD/COD/TSS/pH), Zona 3 (Sakelar)</td>
+            <td><span style="color: #34d399; font-weight: 700;">✓ 100% Selaras</span></td>
+          </tr>
+          <tr>
+            <td><strong>Mockup 09</strong></td>
+            <td>PRD Bab 6.1 &amp; 6.2</td>
+            <td>Penanganan Krisis Limbah &amp; Alarm Darurat AL-01 s.d AL-15</td>
+            <td>Banner alarm merah berkedip AL-04, timer 60s, mitigasi 4 SOP</td>
+            <td><span style="color: #34d399; font-weight: 700;">✓ 100% Selaras</span></td>
+          </tr>
+          <tr>
+            <td><strong>Mockup 10</strong></td>
+            <td>PRD Bab 4 &amp; 6.4</td>
+            <td>Formula Kelulusan 40% SOP + 30% Respons + 30% Efluen</td>
+            <td>Dial skor 100, 3 bintang, 3 kartu formula rincian, dan bonus XP</td>
+            <td><span style="color: #34d399; font-weight: 700;">✓ 100% Selaras</span></td>
+          </tr>
+          <tr>
+            <td><strong>Mockup 11</strong></td>
+            <td>PRD Bab 4 &amp; Hal 16</td>
+            <td>Evaluasi Post-Test Komprehensif &amp; Analisis N-Gain</td>
+            <td>Ujian akhir 95/100, komparasi pre vs post, dan indeks N-Gain 0.91</td>
+            <td><span style="color: #34d399; font-weight: 700;">✓ 100% Selaras</span></td>
+          </tr>
+          <tr>
+            <td><strong>Mockup 12</strong></td>
+            <td>PRD Bab 7.4 &amp; 8</td>
+            <td>Piagam Kompetensi Resmi Digital UPTD PALD</td>
+            <td>Sertifikat berornamen, nama Agus Santoso, stempel dinas, dan QR Code</td>
+            <td><span style="color: #34d399; font-weight: 700;">✓ 100% Selaras</span></td>
+          </tr>
+          <tr>
+            <td><strong>Mockup 13</strong></td>
+            <td>PRD Bab 7.4</td>
+            <td>Portal Verifikasi Publik QR Code &amp; Kepatuhan Privasi</td>
+            <td>Status akreditasi sah tanpa membocorkan nilai privat (Desktop &amp; Mobile)</td>
+            <td><span style="color: #34d399; font-weight: 700;">✓ 100% Selaras</span></td>
+          </tr>
+          <tr>
+            <td><strong>Mockup 14</strong></td>
+            <td>PRD Bab 7.3 &amp; Hal 18</td>
+            <td>Dashboard Supervisor UPTD, Watchlist &amp; Multi-Tenant Benchmark</td>
+            <td>Filter operator inaktif >=7 hari, gagal >=3x, dan grafik kesulitan misi</td>
+            <td><span style="color: #34d399; font-weight: 700;">✓ 100% Selaras</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <footer style="text-align: center; color: #64748b; font-size: 0.85rem; padding-top: 24px; border-top: 1px solid var(--border-dark);">
+      <p>Cetak Biru Desain Pre-Development &amp; Narasi Alur Belajar SiLimbah (14 Halaman) • Disusun selaras dengan PRD Magister Informatika &amp; RPL Pradita University 2026.</p>
+      <p style="margin-top: 4px;">Tidak disematkan ke dalam menu aplikasi utama guna menjaga kemurnian simulasi operasional operator.</p>
+    </footer>
+
+  </div>
+
+</body>
+</html>
