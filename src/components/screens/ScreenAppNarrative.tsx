@@ -85,11 +85,11 @@ Setiap misi simulasi dilengkapi diagram teknis interaktif dan kanvas penampang s
   * < 75,0 atau post-test < 75: Belum Lulus (Wajib Remedial Misi dan Ujian)
 - Baku Mutu Permen LHK P.68/2016: pH 6.0-9.0, BOD <= 30 mg/L, COD <= 100 mg/L, TSS <= 30 mg/L, Minyak & Lemak <= 5 mg/L, Amonia <= 10 mg/L, Total Coliform <= 3.000 CFU/100 mL.
 - 5 Jenjang Level Operator (% dari XP maksimum jalur: BW 1.500, GW 1.500, Lengkap 3.400):
-  * Level 1 Calon Operator (0-14% · Lengkap: 0-475 XP · BW/GW: 0-209 XP)
-  * Level 2 Operator Pratama (15-34% · Lengkap: 476-1.155 XP · BW/GW: 210-509 XP)
-  * Level 3 Operator Muda (35-59% · Lengkap: 1.156-2.005 XP · BW/GW: 510-884 XP)
-  * Level 4 Operator Madya (60-84% · Lengkap: 2.006-2.855 XP · BW/GW: 885-1.259 XP)
-  * Level 5 Operator Utama (85-100% · Lengkap: 2.856-3.400 XP · BW/GW: 1.260-1.500 XP)
+  * Level 1 Calon Operator (0-14% · Lengkap: 0-509 XP · BW/GW: 0-224 XP)
+  * Level 2 Operator Pratama (15-34% · Lengkap: 510-1.189 XP · BW/GW: 225-524 XP)
+  * Level 3 Operator Muda (35-59% · Lengkap: 1.190-2.039 XP · BW/GW: 525-899 XP)
+  * Level 4 Operator Madya (60-84% · Lengkap: 2.040-2.889 XP · BW/GW: 900-1.274 XP)
+  * Level 5 Operator Utama (85-100% · Lengkap: 2.890-3.400 XP · BW/GW: 1.275-1.500 XP)
 - 14 Lencana Keahlian (Badges).
 
 ## 6. MULTI-ROLE & 10 AKUN DEMO PRD
@@ -97,9 +97,9 @@ Setiap misi simulasi dilengkapi diagram teknis interaktif dan kanvas penampang s
    - peserta.lengkap (UPTD PALD Kabupaten Sukamaju · Misi BW-4 aktif alert)
    - peserta.lulus (UPTD PALD Kabupaten Sukamaju · Lulus 100%, Nilai Akhir 91,2, siap cetak piagam)
    - peserta.bw (UPTD PALD Kabupaten Sukamaju · Jalur Black Water baru)
-   - peserta.gw (IPAL Tirta Kencana · Menguji reaktor anaerob bersekat (ABR) dan biofilter anaerob di GW-3)
-2. Instruktur: instruktur.uptd (UPTD PALD Kabupaten Sukamaju), instruktur.iplt (IPLT Tirta Mandiri) — Evaluasi kelas, ekspor CSV, bank soal.
-3. Admin Operator: admin.uptd (UPTD PALD Kabupaten Sukamaju), admin.ipal (IPAL Tirta Kencana) — Kelola akun, kelas/angkatan, fasilitas IPAL/IPLT.
+   - peserta.gw (IPAL Komunal RW 05 Mekarsari · Menguji reaktor anaerob bersekat (ABR) dan biofilter anaerob di GW-3)
+2. Instruktur: instruktur.uptd (UPTD PALD Kabupaten Sukamaju), instruktur.iplt (IPLT Tirta Lestari Kota Sukamaju) — Evaluasi kelas, ekspor CSV, bank soal.
+3. Admin Operator: admin.uptd (UPTD PALD Kabupaten Sukamaju), admin.ipal (IPAL Komunal RW 05 Mekarsari) — Kelola akun, kelas/angkatan, fasilitas IPAL/IPLT.
 4. Pimpinan UPTD: pimpinan.uptd (Kepala UPTD PALD Kabupaten Sukamaju) — Laporan eksekutif, rekap kelulusan, ringkasan kepatuhan baku mutu.
 5. Superadmin: superadmin (Multi-tenant operator UPTD PALD/IPLT, lisensi kuota).
 Password default seluruh akun: SiLimbah#2026
@@ -516,11 +516,11 @@ Password default seluruh akun: SiLimbah#2026
             </p>
             <div className="grid grid-cols-1 sm:grid-cols-5 gap-2">
               {[
-                { lvl: 'Level 1', name: 'Calon Operator', pct: '0–14%', rangeLengkap: '0–475 XP', rangeShort: 'BW/GW: 0–209 XP' },
-                { lvl: 'Level 2', name: 'Operator Pratama', pct: '15–34%', rangeLengkap: '476–1.155 XP', rangeShort: 'BW/GW: 210–509 XP' },
-                { lvl: 'Level 3', name: 'Operator Muda', pct: '35–59%', rangeLengkap: '1.156–2.005 XP', rangeShort: 'BW/GW: 510–884 XP' },
-                { lvl: 'Level 4', name: 'Operator Madya', pct: '60–84%', rangeLengkap: '2.006–2.855 XP', rangeShort: 'BW/GW: 885–1.259 XP' },
-                { lvl: 'Level 5', name: 'Operator Utama', pct: '85–100%', rangeLengkap: '2.856–3.400 XP', rangeShort: 'BW/GW: 1.260–1.500 XP' },
+                { lvl: 'Level 1', name: 'Calon Operator', pct: '0–14%', rangeLengkap: '0–509 XP', rangeShort: 'BW/GW: 0–224 XP' },
+                { lvl: 'Level 2', name: 'Operator Pratama', pct: '15–34%', rangeLengkap: '510–1.189 XP', rangeShort: 'BW/GW: 225–524 XP' },
+                { lvl: 'Level 3', name: 'Operator Muda', pct: '35–59%', rangeLengkap: '1.190–2.039 XP', rangeShort: 'BW/GW: 525–899 XP' },
+                { lvl: 'Level 4', name: 'Operator Madya', pct: '60–84%', rangeLengkap: '2.040–2.889 XP', rangeShort: 'BW/GW: 900–1.274 XP' },
+                { lvl: 'Level 5', name: 'Operator Utama', pct: '85–100%', rangeLengkap: '2.890–3.400 XP', rangeShort: 'BW/GW: 1.275–1.500 XP' },
               ].map((lvl, idx) => (
                 <div key={idx} className="p-3 bg-slate-50 rounded-lg border border-slate-200 text-center">
                   <span className="font-mono text-[11px] font-bold text-teal-700">{lvl.lvl} ({lvl.pct})</span>
@@ -571,7 +571,7 @@ Password default seluruh akun: SiLimbah#2026
               {
                 user: 'peserta.gw',
                 role: 'Peserta (Grey Water)',
-                org: 'IPAL Tirta Kencana',
+                org: 'IPAL Komunal RW 05 Mekarsari',
                 state: 'Sedang di Misi GW-3',
                 desc: 'Cocok untuk menguji reaktor anaerob bersekat (ABR) dan biofilter anaerob di GW-3.',
               },
@@ -585,7 +585,7 @@ Password default seluruh akun: SiLimbah#2026
               {
                 user: 'instruktur.iplt',
                 role: 'Instruktur',
-                org: 'IPLT Tirta Mandiri',
+                org: 'IPLT Tirta Lestari Kota Sukamaju',
                 state: 'Pengampu 18 Peserta',
                 desc: 'Bisa mengedit bank soal kuis dan menambahkan skenario simulasi baru.',
               },
@@ -599,7 +599,7 @@ Password default seluruh akun: SiLimbah#2026
               {
                 user: 'admin.ipal',
                 role: 'Admin Operator',
-                org: 'IPAL Tirta Kencana',
+                org: 'IPAL Komunal RW 05 Mekarsari',
                 state: 'Administrator IPAL',
                 desc: 'Memantau inventaris armada truk tinja dan data operasional IPAL Komunal.',
               },

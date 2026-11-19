@@ -167,14 +167,14 @@ export const ScreenLogin: React.FC = () => {
               className="p-2 rounded-lg bg-slate-900/60 hover:bg-slate-700/70 text-left border border-slate-700/50 cursor-pointer"
             >
               <div className="font-semibold text-white">peserta.bw</div>
-              <div className="text-[11px] text-slate-300">IPLT Tirta · Selesai BW-1</div>
+              <div className="text-[11px] text-slate-300">IPLT Tirta Lestari · Selesai BW-1</div>
             </button>
             <button
               onClick={() => handleQuickDemoPick('peserta.gw')}
               className="p-2 rounded-lg bg-slate-900/60 hover:bg-slate-700/70 text-left border border-slate-700/50 cursor-pointer"
             >
               <div className="font-semibold text-white">peserta.gw</div>
-              <div className="text-[11px] text-slate-300">IPAL Mekarsari · Di GW-3</div>
+              <div className="text-[11px] text-slate-300">IPAL RW 05 Mekarsari · Di GW-3</div>
             </button>
           </div>
         </div>

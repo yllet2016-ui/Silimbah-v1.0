@@ -122,7 +122,7 @@ interface AppContextType {
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
-const STORAGE_KEY = 'silimbah_app_state_v1_2';
+const STORAGE_KEY = 'silimbah_app_state_v1_3';
 
 export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   // Load initial state from localStorage or mockData
@@ -225,13 +225,13 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const currentUser = users.find((u) => u.id === currentUserId) || null;
   const currentOperator = operators.find((o) => o.id === currentUser?.operatorId) || null;
 
-  // Jenjang Level Operator berdasarkan persentase XP maksimum jalur:
+  // Jenjang Level Operator berdasarkan persentase XP maksimum jalur (tepat 15/35/60/85%):
   // Track Max XP: Black Water 1.500, Grey Water 1.500, Lengkap 3.400
-  // Level 1 Calon Operator: 0–14%   (Lengkap: 0–475,   BW/GW: 0–209)
-  // Level 2 Operator Pratama: 15–34% (Lengkap: 476–1.155, BW/GW: 210–509)
-  // Level 3 Operator Muda: 35–59%    (Lengkap: 1.156–2.005, BW/GW: 510–884)
-  // Level 4 Operator Madya: 60–84%   (Lengkap: 2.006–2.855, BW/GW: 885–1.259)
-  // Level 5 Operator Utama: 85–100%  (Lengkap: 2.856–3.400, BW/GW: 1.260–1.500)
+  // Level 1 Calon Operator: 0–14%    (Lengkap: 0–509,     BW/GW: 0–224)
+  // Level 2 Operator Pratama: 15–34% (Lengkap: 510–1.189, BW/GW: 225–524)
+  // Level 3 Operator Muda: 35–59%    (Lengkap: 1.190–2.039, BW/GW: 525–899)
+  // Level 4 Operator Madya: 60–84%   (Lengkap: 2.040–2.889, BW/GW: 900–1.274)
+  // Level 5 Operator Utama: 85–100%  (Lengkap: 2.890–3.400, BW/GW: 1.275–1.500)
   const getTrackMaxXP = (track?: LearningTrack): number => {
     if (track === 'black_water' || track === 'grey_water') return 1500;
     return 3400; // default / lengkap
@@ -243,43 +243,43 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     const percent = Math.round(ratio * 100);
     const isShortTrack = maxXp === 1500;
 
-    if (ratio >= 0.84) {
+    if (ratio >= 0.85) {
       return {
         level: 5,
         title: 'Operator Utama',
         progressPercent: percent,
-        xpRange: isShortTrack ? '1.260–1.500 XP' : '2.856–3.400 XP',
+        xpRange: isShortTrack ? '1.275–1.500 XP' : '2.890–3.400 XP',
       };
     }
-    if (ratio >= 0.59) {
+    if (ratio >= 0.6) {
       return {
         level: 4,
         title: 'Operator Madya',
         progressPercent: percent,
-        xpRange: isShortTrack ? '885–1.259 XP' : '2.006–2.855 XP',
+        xpRange: isShortTrack ? '900–1.274 XP' : '2.040–2.889 XP',
       };
     }
-    if (ratio >= 0.34) {
+    if (ratio >= 0.35) {
       return {
         level: 3,
         title: 'Operator Muda',
         progressPercent: percent,
-        xpRange: isShortTrack ? '510–884 XP' : '1.156–2.005 XP',
+        xpRange: isShortTrack ? '525–899 XP' : '1.190–2.039 XP',
       };
     }
-    if (ratio >= 0.14) {
+    if (ratio >= 0.15) {
       return {
         level: 2,
         title: 'Operator Pratama',
         progressPercent: percent,
-        xpRange: isShortTrack ? '210–509 XP' : '476–1.155 XP',
+        xpRange: isShortTrack ? '225–524 XP' : '510–1.189 XP',
       };
     }
     return {
       level: 1,
       title: 'Calon Operator',
       progressPercent: percent,
-      xpRange: isShortTrack ? '0–209 XP' : '0–475 XP',
+      xpRange: isShortTrack ? '0–224 XP' : '0–509 XP',
     };
   };
 
@@ -597,16 +597,13 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   };
 
   const resetAllDemoData = () => {
-    localStorage.removeItem('silimbah_app_state_v1_1_users');
-    localStorage.removeItem('silimbah_app_state_v1_1_operators');
-    localStorage.removeItem('silimbah_app_state_v1_1_certificates');
-    localStorage.removeItem('silimbah_app_state_v1_1_facilities');
-    localStorage.removeItem('silimbah_app_state_v1_1_alert_logs');
-    localStorage.removeItem(`${STORAGE_KEY}_users`);
-    localStorage.removeItem(`${STORAGE_KEY}_operators`);
-    localStorage.removeItem(`${STORAGE_KEY}_certificates`);
-    localStorage.removeItem(`${STORAGE_KEY}_facilities`);
-    localStorage.removeItem(`${STORAGE_KEY}_alert_logs`);
+    ['silimbah_app_state_v1_1', 'silimbah_app_state_v1_2', STORAGE_KEY].forEach((prefix) => {
+      localStorage.removeItem(`${prefix}_users`);
+      localStorage.removeItem(`${prefix}_operators`);
+      localStorage.removeItem(`${prefix}_certificates`);
+      localStorage.removeItem(`${prefix}_facilities`);
+      localStorage.removeItem(`${prefix}_alert_logs`);
+    });
     setUsers(INITIAL_USERS);
     setOperators(INITIAL_OPERATORS);
     setCertificates(INITIAL_CERTIFICATES);

@@ -26,6 +26,7 @@ export const Navbar: React.FC = () => {
     resetAllDemoData,
     switchUser,
     users,
+    operators,
     getLevelInfo,
   } = useApp();
 
@@ -400,12 +401,13 @@ export const Navbar: React.FC = () => {
             <div className="p-6 grid grid-cols-1 md:grid-cols-2 gap-3">
               {users.slice(0, 10).map((u) => {
                 const isSelected = u.id === currentUser?.id;
+                const op = operators.find((o) => o.id === u.operatorId);
                 let statusBadge = '';
                 if (u.username === 'peserta.lengkap') statusBadge = 'Sedang di BW-4 (Ada Alert Aktif)';
                 else if (u.username === 'peserta.lulus') statusBadge = 'Lulus 100% · Siap Unduh Piagam';
                 else if (u.username === 'peserta.bw') statusBadge = 'Jalur Black Water · Baru selesai BW-1';
                 else if (u.username === 'peserta.gw') statusBadge = 'Jalur Grey Water · Sedang di GW-3';
-                else if (u.username === 'iplt_tirta' || u.operatorId === 'iplt_tirta') statusBadge = 'IPLT Tirta · Lisensi Hampir Habis';
+                else if (u.username === 'iplt_tirta' || u.operatorId === 'iplt_tirta') statusBadge = 'IPLT Tirta Lestari Kota Sukamaju · Lisensi Hampir Habis';
 
                 return (
                   <div
@@ -436,6 +438,7 @@ export const Navbar: React.FC = () => {
                       <span className="font-medium text-slate-800 capitalize">
                         {u.role.replace('_', ' ')}
                       </span>
+                      {op ? ` · ${op.name}` : ''}
                       {u.classCohort ? ` · ${u.classCohort}` : ''}
                     </p>
 
