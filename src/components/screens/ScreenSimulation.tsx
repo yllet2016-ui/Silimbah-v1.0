@@ -40,7 +40,7 @@ export const ScreenSimulation: React.FC = () => {
     missions,
     currentUser,
     setCurrentScreen,
-    recordMissionCompletion,
+    proceedToSimulationQuiz,
     logAlertAction,
   } = useApp();
 
@@ -344,7 +344,7 @@ export const ScreenSimulation: React.FC = () => {
         {
           id: 'alt_gw3_2',
           code: 'AL-10',
-          level: 'critical',
+          level: 'warning',
           title: 'Penyumbatan Media Biofilter (TSS 35 mg/L)',
           message: 'Media sarang tawon biofilter anaerob jenuh dan membutuhkan pencucian balik.',
           timeTriggered: 0,
@@ -878,34 +878,13 @@ export const ScreenSimulation: React.FC = () => {
     const criticalActive = activeAlerts.filter((a) => a.level === 'critical').length;
     finalScore = Math.max(0, Math.min(100, finalScore - criticalActive * 10));
 
-    // Stars: 1★ 60–74, 2★ 75–89, 3★ ≥ 90
-    let stars = 0;
-    if (finalScore >= 90) stars = 3;
-    else if (finalScore >= 75) stars = 2;
-    else if (finalScore >= 60) stars = 1;
-
-    // Bonus XP calculation (Bagian 4): +10% tanpa petunjuk, +10% di bawah waktu target
-    let bonusRatio = 0;
-    if (hintsUsedCount === 0) bonusRatio += 0.1;
-    if (timeElapsed <= mission.targetTimeSeconds) bonusRatio += 0.1;
-
-    const baseXP = Math.round((finalScore / 100) * mission.maxXP);
-    const bonusXP = Math.round(baseXP * bonusRatio);
-    const totalXP = baseXP + bonusXP;
-
-    // Check unlocked badges
+    // Check simulation-earned badges (badge_penyedot & badge_tanpa_petunjuk finalized after quiz)
     const unlockedBadges: string[] = [];
-    if (mission.id === 'BW-3' && stars === 3) {
-      unlockedBadges.push('badge_penyedot');
-    }
     if (correctActionsCount >= 3) {
       unlockedBadges.push('badge_alert');
     }
     if (openedNarrativeIds.size >= (objects.length || 2)) {
       unlockedBadges.push('badge_teliti');
-    }
-    if (hintsUsedCount === 0 && stars >= 2) {
-      unlockedBadges.push('badge_tanpa_petunjuk');
     }
 
     const mistakes: string[] = [];
@@ -913,23 +892,13 @@ export const ScreenSimulation: React.FC = () => {
     if (criticalActive > 0) mistakes.push(`${criticalActive} alert Kritis belum ditangani hingga simulasi berakhir.`);
     if (actionAccuracy < 80) mistakes.push(`Ketepatan penanganan aksi operator sebesar ${actionAccuracy}%.`);
 
-    const recommendedReview =
-      mistakes.length > 0
-        ? `Tinjau kembali ${mission.theorySummary.mainConcept} dan tabel baku mutu Permen LHK 68/2016.`
-        : 'Performa simulasi sangat prima dan siap melanjutkan ke misi berikutnya!';
-
-    recordMissionCompletion({
+    proceedToSimulationQuiz({
       missionId: mission.id,
-      score: finalScore,
-      stars,
-      baseXP,
-      bonusXP,
-      totalXP,
+      simScore: finalScore,
       hintsUsed: hintsUsedCount,
       elapsedSeconds: timeElapsed,
       unlockedBadgeIds: unlockedBadges,
       mistakes,
-      recommendedReview,
     });
   };
 

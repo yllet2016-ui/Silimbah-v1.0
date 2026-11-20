@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useApp } from '../../context/AppContext';
 import { QuizQuestion } from '../../types';
 import {
@@ -31,6 +31,7 @@ export const ScreenQuizExam: React.FC = () => {
     missions,
     questions,
     currentUser,
+    pendingSimulationResult,
     setCurrentScreen,
     recordMissionCompletion,
     kkmThreshold,
@@ -38,6 +39,12 @@ export const ScreenQuizExam: React.FC = () => {
 
   const mission = missions.find((m) => m.id === activeMissionId) || missions[0];
   const activeTrack = currentUser?.track || 'lengkap';
+  const isPostSimQuiz = Boolean(
+    pendingSimulationResult &&
+      currentExamType === 'mission_quiz' &&
+      pendingSimulationResult.missionId === mission.id
+  );
+  const hasSubmittedRef = useRef(false);
 
   // Determine questions for this exam
   const examQuestions = React.useMemo(() => {
@@ -130,6 +137,9 @@ export const ScreenQuizExam: React.FC = () => {
   };
 
   const handleSubmitExam = () => {
+    if (hasSubmittedRef.current) return;
+    hasSubmittedRef.current = true;
+
     let correctCount = 0;
     const mistakes: string[] = [];
 
@@ -149,10 +159,68 @@ export const ScreenQuizExam: React.FC = () => {
         ? Math.round((correctCount / examQuestions.length) * 100)
         : 0;
     // Apply hint penalty: -5 per hint (PRD Bagian 4)
-    const finalScore = Math.max(0, rawScore - hintsUsed * 5);
+    const quizScore = Math.max(0, rawScore - hintsUsed * 5);
 
-    // Star calculation
-    let stars = 0;
+    if (isPostSimQuiz && pendingSimulationResult) {
+      const simScore = pendingSimulationResult.simScore;
+      const combinedScore = Math.round(simScore * 0.7 + quizScore * 0.3);
+      const totalHintsUsed = pendingSimulationResult.hintsUsed + hintsUsed;
+      const quizElapsed = Math.max(0, (mission.targetTimeSeconds || 600) - secondsRemaining);
+      const totalElapsedSeconds = pendingSimulationResult.elapsedSeconds + quizElapsed;
+
+      let stars = 0;
+      if (combinedScore >= 90) stars = 3;
+      else if (combinedScore >= 75) stars = 2;
+      else if (combinedScore >= 60) stars = 1;
+
+      let bonusRatio = 0;
+      if (totalHintsUsed === 0) bonusRatio += 0.1;
+      if (totalElapsedSeconds <= mission.targetTimeSeconds) bonusRatio += 0.1;
+
+      const baseXP = Math.round((combinedScore / 100) * mission.maxXP);
+      const bonusXP = Math.round(baseXP * bonusRatio);
+      const totalXP = baseXP + bonusXP;
+
+      const unlockedBadges = [...pendingSimulationResult.unlockedBadgeIds];
+      if (mission.id === 'BW-3' && stars === 3 && !unlockedBadges.includes('badge_penyedot')) {
+        unlockedBadges.push('badge_penyedot');
+      }
+      if (totalHintsUsed === 0 && stars >= 2 && !unlockedBadges.includes('badge_tanpa_petunjuk')) {
+        unlockedBadges.push('badge_tanpa_petunjuk');
+      }
+
+      const combinedMistakes = [...pendingSimulationResult.mistakes, ...mistakes];
+      if (combinedScore >= 75) {
+        confetti({ particleCount: 80, spread: 70 });
+      }
+
+      const recommendedReview =
+        combinedMistakes.length > 0
+          ? `Tinjau kembali ${mission.theorySummary.mainConcept} dan pembahasan kuis misi ${mission.id}.`
+          : 'Performa simulasi dan kuis misi sangat prima, siap melanjutkan ke misi berikutnya!';
+
+      recordMissionCompletion({
+        missionId: mission.id,
+        score: combinedScore,
+        simScore,
+        quizScore,
+        stars,
+        baseXP,
+        bonusXP,
+        totalXP,
+        hintsUsed: totalHintsUsed,
+        elapsedSeconds: totalElapsedSeconds,
+        unlockedBadgeIds: unlockedBadges,
+        mistakes: combinedMistakes,
+        recommendedReview,
+      });
+      return;
+    }
+
+    const finalScore = quizScore;
+
+    // Star calculation (M-0 selesai berapa pun skornya)
+    let stars = currentExamType === 'pre_test' ? 1 : 0;
     if (finalScore >= 90) stars = 3;
     else if (finalScore >= 75) stars = 2;
     else if (finalScore >= 60) stars = 1;
@@ -174,7 +242,7 @@ export const ScreenQuizExam: React.FC = () => {
     if (currentExamType === 'post_test' && finalScore >= 90) {
       unlockedBadges.push('badge_gemilang');
     }
-    if (hintsUsed === 0 && stars >= 2) {
+    if (currentExamType !== 'pre_test' && hintsUsed === 0 && stars >= 2) {
       unlockedBadges.push('badge_tanpa_petunjuk');
     }
 
@@ -216,10 +284,15 @@ export const ScreenQuizExam: React.FC = () => {
                   ? 'Pre-Test Awal'
                   : currentExamType === 'post_test'
                   ? 'Post-Test Evaluasi Akhir'
+                  : isPostSimQuiz
+                  ? `Kuis Pasca-Simulasi · ${mission.id}`
                   : `Kuis Misi · ${mission.id}`}
               </span>
               <span className="text-xs text-slate-500">
                 {examQuestions.length} Soal Pilihan Ganda (A–D)
+                {isPostSimQuiz && pendingSimulationResult
+                  ? ` · Simulasi (${pendingSimulationResult.simScore}) 70% + Kuis 30%`
+                  : ''}
               </span>
             </div>
             <h1 className="text-xl font-bold text-slate-900">{mission.title}</h1>

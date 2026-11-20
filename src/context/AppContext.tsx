@@ -40,6 +40,8 @@ export type ScreenId =
 export interface DebriefResult {
   missionId: string;
   score: number;
+  simScore?: number;
+  quizScore?: number;
   stars: number;
   baseXP: number;
   bonusXP: number;
@@ -49,6 +51,15 @@ export interface DebriefResult {
   unlockedBadgeIds: string[];
   mistakes: string[];
   recommendedReview: string;
+}
+
+export interface PendingSimulationResult {
+  missionId: string;
+  simScore: number;
+  hintsUsed: number;
+  elapsedSeconds: number;
+  unlockedBadgeIds: string[];
+  mistakes: string[];
 }
 
 export interface AlertLogEntry {
@@ -71,6 +82,7 @@ interface AppContextType {
   currentExamType: 'pre_test' | 'post_test' | 'mission_quiz';
   inspectedStudentId: string | null;
   lastDebriefResult: DebriefResult | null;
+  pendingSimulationResult: PendingSimulationResult | null;
   verifyingCertCode: string | null;
 
   // Data lists
@@ -87,6 +99,7 @@ interface AppContextType {
   setCurrentScreen: (screen: ScreenId) => void;
   selectMission: (missionId: string, screenTarget?: ScreenId) => void;
   startExam: (type: 'pre_test' | 'post_test' | 'mission_quiz', missionId?: string) => void;
+  proceedToSimulationQuiz: (pending: PendingSimulationResult) => void;
   switchUser: (username: string) => void;
   login: (username: string) => boolean;
   logout: () => void;
@@ -113,10 +126,11 @@ interface AppContextType {
   // Helpers
   getStudentFinalGrade: (user: User) => {
     avgMissionScore: number;
-    postTestScore: number;
-    finalScore: number;
+    postTestScore: number | null;
+    hasPostTest: boolean;
+    finalScore: number | null;
     isEligible: boolean;
-    predicate: 'Lulus Baik' | 'Lulus Sangat Baik' | 'Lulus Dengan Pujian' | 'Belum Lulus';
+    predicate: 'Lulus Baik' | 'Lulus Sangat Baik' | 'Lulus Dengan Pujian' | 'Belum Lulus' | 'Dalam Proses';
   };
   getTrackMaxXP: (track?: LearningTrack) => number;
   getLevelInfo: (xp: number, track?: LearningTrack) => { level: number; title: string; progressPercent: number; xpRange: string };
@@ -137,7 +151,9 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       Object.keys(updatedCompleted).forEach((mId) => {
         const m = updatedCompleted[mId];
         const properStars =
-          m.score >= 90 ? 3 : m.score >= 75 ? 2 : m.score >= 60 ? 1 : 0;
+          mId === 'M-0'
+            ? Math.max(1, m.stars)
+            : m.score >= 90 ? 3 : m.score >= 75 ? 2 : m.score >= 60 ? 1 : 0;
         if (properStars > m.stars) {
           updatedCompleted[mId] = { ...m, stars: properStars };
           modified = true;
@@ -214,6 +230,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const [currentExamType, setCurrentExamType] = useState<'pre_test' | 'post_test' | 'mission_quiz'>('pre_test');
   const [inspectedStudentId, setInspectedStudentId] = useState<string | null>('usr_peserta_lengkap');
   const [lastDebriefResult, setLastDebriefResult] = useState<DebriefResult | null>(null);
+  const [pendingSimulationResult, setPendingSimulationResult] = useState<PendingSimulationResult | null>(null);
   const [verifyingCertCode, setVerifyingCertCode] = useState<string | null>(null);
 
   // Sync to localStorage
@@ -315,8 +332,11 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         ? Math.round((missionScores.reduce((a, b) => a + b, 0) / missionScores.length) * 10) / 10
         : 0;
 
+    const hasPostTest = user.postTestScore !== undefined;
     const postTest = user.postTestScore ?? 0;
-    const finalScore = Math.round((avgMissionScore * 0.4 + postTest * 0.6) * 10) / 10;
+    const finalScore = hasPostTest
+      ? Math.round((avgMissionScore * 0.4 + postTest * 0.6) * 10) / 10
+      : null;
 
     // Required missions according to track
     let requiredMissions: string[] = [];
@@ -338,10 +358,16 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     });
 
     // Syarat lulus: (a) semua misi minimal 1 bintang, (b) post-test >= 75, (c) Nilai Akhir >= 75
-    const isEligible = allPassed && postTest >= kkmThreshold && finalScore >= kkmThreshold;
+    const isEligible =
+      hasPostTest &&
+      allPassed &&
+      postTest >= kkmThreshold &&
+      finalScore !== null &&
+      finalScore >= kkmThreshold;
 
-    let predicate: 'Lulus Baik' | 'Lulus Sangat Baik' | 'Lulus Dengan Pujian' | 'Belum Lulus' = 'Belum Lulus';
-    if (isEligible) {
+    let predicate: 'Lulus Baik' | 'Lulus Sangat Baik' | 'Lulus Dengan Pujian' | 'Belum Lulus' | 'Dalam Proses' =
+      hasPostTest ? 'Belum Lulus' : 'Dalam Proses';
+    if (isEligible && finalScore !== null) {
       if (finalScore >= 85) {
         predicate = 'Lulus Dengan Pujian';
       } else if (finalScore >= 80) {
@@ -351,10 +377,18 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       }
     }
 
-    return { avgMissionScore, postTestScore: postTest, finalScore, isEligible, predicate };
+    return {
+      avgMissionScore,
+      postTestScore: user.postTestScore ?? null,
+      hasPostTest,
+      finalScore,
+      isEligible,
+      predicate,
+    };
   };
 
   const switchUser = (username: string) => {
+    setPendingSimulationResult(null);
     const target = users.find((u) => u.username === username);
     if (target) {
       setCurrentUserId(target.id);
@@ -385,6 +419,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   };
 
   const logout = () => {
+    setPendingSimulationResult(null);
     setActiveScreen('login');
   };
 
@@ -393,6 +428,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   };
 
   const selectMission = (missionId: string, screenTarget?: ScreenId) => {
+    setPendingSimulationResult(null);
     setActiveMissionId(missionId);
     const mission = missions.find((m) => m.id === missionId);
 
@@ -411,10 +447,18 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   };
 
   const startExam = (type: 'pre_test' | 'post_test' | 'mission_quiz', missionId?: string) => {
+    setPendingSimulationResult(null);
     setCurrentExamType(type);
     if (missionId) {
       setActiveMissionId(missionId);
     }
+    setActiveScreen('quiz_exam');
+  };
+
+  const proceedToSimulationQuiz = (pending: PendingSimulationResult) => {
+    setPendingSimulationResult(pending);
+    setCurrentExamType('mission_quiz');
+    setActiveMissionId(pending.missionId);
     setActiveScreen('quiz_exam');
   };
 
@@ -427,10 +471,22 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   const recordMissionCompletion = (result: DebriefResult) => {
     const computedStars =
-      result.score >= 90 ? 3 : result.score >= 75 ? 2 : result.score >= 60 ? 1 : 0;
-    const finalStars = Math.max(result.stars, computedStars);
+      result.missionId === 'M-0'
+        ? 1
+        : result.score >= 90
+        ? 3
+        : result.score >= 75
+        ? 2
+        : result.score >= 60
+        ? 1
+        : 0;
+    const finalStars =
+      result.missionId === 'M-0'
+        ? Math.max(1, result.stars, computedStars)
+        : Math.max(result.stars, computedStars);
     const sanitizedResult: DebriefResult = { ...result, stars: finalStars };
 
+    setPendingSimulationResult(null);
     setLastDebriefResult(sanitizedResult);
     if (!currentUser) return;
 
@@ -499,7 +555,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
     const op = operators.find((o) => o.id === student.operatorId) || operators[0];
     const { finalScore, predicate, isEligible } = getStudentFinalGrade(student);
-    if (!isEligible) return null;
+    if (!isEligible || finalScore === null) return null;
 
     const randomSuffix = Math.floor(1000 + Math.random() * 9000);
     const certCode = `VRF-SLB-${randomSuffix}`;
@@ -653,6 +709,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         responseTimeSeconds: 45,
       },
     ]);
+    setPendingSimulationResult(null);
+    setLastDebriefResult(null);
     setCurrentUserId('usr_peserta_lengkap');
     setActiveScreen('mission_map');
     setActiveMissionId('BW-4');
@@ -686,6 +744,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         currentExamType,
         inspectedStudentId,
         lastDebriefResult,
+        pendingSimulationResult,
         verifyingCertCode,
         users,
         operators,
@@ -698,6 +757,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         setCurrentScreen,
         selectMission,
         startExam,
+        proceedToSimulationQuiz,
         switchUser,
         login,
         logout,

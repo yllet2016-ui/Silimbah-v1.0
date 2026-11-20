@@ -88,9 +88,9 @@ export const ScreenMissionBriefing: React.FC = () => {
                 <p className="text-slate-400">Format Evaluasi</p>
                 <p className="font-bold text-white text-sm capitalize mt-0.5">
                   {mission.type === 'simulation'
-                    ? 'Simulasi Dinamis'
+                    ? 'Simulasi Dinamis + Kuis 5 Soal'
                     : mission.type === 'drag_drop'
-                    ? 'Seret-Lepas Rakit'
+                    ? 'Seret-Lepas Rakit + Kuis 5 Soal'
                     : mission.type === 'pre_test' || mission.type === 'post_test'
                     ? 'Ujian 20 Soal Sesuai Jalur'
                     : 'Kuis 5 Soal Khusus Misi'}
@@ -145,9 +145,10 @@ export const ScreenMissionBriefing: React.FC = () => {
             <div className="bg-slate-50 rounded-2xl p-4 border border-slate-200 text-xs text-slate-600 space-y-2">
               <span className="font-bold text-slate-900 block">Aturan Penilaian & Bonus XP:</span>
               <ul className="list-disc list-inside space-y-1 text-slate-600 text-[11px]">
-                <li>Skor akhir (0–100): Kuis = % Benar; Simulasi = 40% Ketepatan Aksi + 30% Waktu Respons + 30% Kualitas Efluen - Penalti.</li>
-                <li>Format soal evaluasi: kuis misi memakai 5 soal khusus misi tersebut; pre-test dan post-test masing-masing 20 soal sesuai jalur, dengan soal yang berbeda (setara tingkat kesulitannya).</li>
-                <li>Bintang: 1★ (60–74), 2★ (75–89), 3★ (≥90). Jika &lt;60 misi belum lulus dan boleh diulang bebas.</li>
+                <li>Misi kuis saja (BW-1 dan GW-1): Skor = % Benar (dikurangi penalti petunjuk jika digunakan).</li>
+                <li>Misi simulasi &amp; perakitan (BW-2 s.d. BW-5, GW-2 s.d. GW-5, INT-1 s.d. INT-3): setelah klik &quot;Selesaikan Simulasi&quot;, peserta wajib menyelesaikan kuis 5 soal khusus misi; Skor Akhir Misi = 70% Skor Simulasi (0,4 × Ketepatan Aksi + 0,3 × Waktu Respons + 0,3 × Kualitas Efluen − Penalti) + 30% Skor Kuis.</li>
+                <li>Pre-test (M-0) hanya untuk pemetaan kemampuan awal tanpa batas lulus dan selesai setelah dikerjakan 1 kali; Post-test (M-X) memakai 20 soal berbeda sesuai jalur dengan KKM ≥ 75.</li>
+                <li>Bintang misi: 1★ (60–74), 2★ (75–89), 3★ (≥90). Jika &lt;60 misi belum lulus dan boleh diulang bebas.</li>
                 <li>Bonus XP hingga +20%: Tambahan +10% jika menyelesaikan tanpa membuka petunjuk bantuan, dan +10% jika selesai di bawah target waktu.</li>
                 <li>Membuka info narasi objek pada simulasi tidak mengurangi poin skor.</li>
               </ul>

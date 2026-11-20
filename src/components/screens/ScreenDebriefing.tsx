@@ -1,13 +1,11 @@
 import React from 'react';
 import { useApp } from '../../context/AppContext';
+import { INITIAL_BADGES } from '../../data/mockData';
 import {
   Star,
-  Award,
-  Sparkles,
   RotateCcw,
   ArrowRight,
   AlertTriangle,
-  BookOpen,
   CheckCircle2,
   XCircle,
   Trophy,
@@ -19,7 +17,6 @@ export const ScreenDebriefing: React.FC = () => {
     missions,
     setCurrentScreen,
     selectMission,
-    startExam,
   } = useApp();
 
   const result = lastDebriefResult || {
@@ -37,7 +34,13 @@ export const ScreenDebriefing: React.FC = () => {
   };
 
   const mission = missions.find((m) => m.id === result.missionId) || missions[3];
-  const isPassed = result.stars >= 1;
+  const isPreTest = mission.id === 'M-0';
+  const isPassed = isPreTest || result.stars >= 1;
+  const hasSimAndQuiz =
+    result.simScore !== undefined && result.quizScore !== undefined;
+  const unlockedBadgeNames = result.unlockedBadgeIds.map(
+    (id) => INITIAL_BADGES.find((b) => b.id === id)?.name || id
+  );
 
   return (
     <div className="min-h-screen bg-slate-50 py-10 px-4 sm:px-6 lg:px-8">
@@ -52,7 +55,12 @@ export const ScreenDebriefing: React.FC = () => {
             }`}
           >
             <div className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-white/10 mb-3">
-              {isPassed ? (
+              {isPreTest ? (
+                <>
+                  <CheckCircle2 className="w-3.5 h-3.5 text-teal-400" />
+                  <span>HASIL PEMETAAN KEMAMPUAN AWAL</span>
+                </>
+              ) : isPassed ? (
                 <>
                   <CheckCircle2 className="w-3.5 h-3.5 text-teal-400" />
                   <span>Misi Berhasil Dituntaskan!</span>
@@ -69,57 +77,116 @@ export const ScreenDebriefing: React.FC = () => {
               Debriefing: {mission.title}
             </h1>
             <p className="mt-1 text-xs text-slate-300">
-              Evaluasi Kinerja & Kompetensi Operator Air Limbah
+              {isPreTest
+                ? 'Pre-test tidak memiliki batas lulus dan langsung membuka misi pembelajaran pertama.'
+                : 'Evaluasi Kinerja & Kompetensi Operator Air Limbah'}
             </p>
 
             {/* Stars Showcase */}
-            <div className="flex items-center justify-center gap-2 mt-6">
-              {[1, 2, 3].map((starIdx) => {
-                const effectiveStars = Math.max(
-                  result.stars,
-                  result.score >= 90 ? 3 : result.score >= 75 ? 2 : result.score >= 60 ? 1 : 0
-                );
-                return (
-                  <Star
-                    key={starIdx}
-                    className={`w-10 h-10 transition-transform ${
-                      starIdx <= effectiveStars
-                        ? 'fill-amber-400 text-amber-400 scale-110 drop-shadow-md'
-                        : 'text-slate-600'
-                    }`}
-                  />
-                );
-              })}
-            </div>
+            {!isPreTest && (
+              <div className="flex items-center justify-center gap-2 mt-6">
+                {[1, 2, 3].map((starIdx) => {
+                  const effectiveStars = Math.max(
+                    result.stars,
+                    result.score >= 90 ? 3 : result.score >= 75 ? 2 : result.score >= 60 ? 1 : 0
+                  );
+                  return (
+                    <Star
+                      key={starIdx}
+                      className={`w-10 h-10 transition-transform ${
+                        starIdx <= effectiveStars
+                          ? 'fill-amber-400 text-amber-400 scale-110 drop-shadow-md'
+                          : 'text-slate-600'
+                      }`}
+                    />
+                  );
+                })}
+              </div>
+            )}
 
             {/* Score & XP Big Numbers */}
-            <div className="grid grid-cols-3 gap-4 mt-8 pt-6 border-t border-slate-800 text-center">
-              <div>
-                <p className="text-xs text-slate-400">Skor Akhir</p>
-                <p className="text-3xl font-extrabold font-mono text-white mt-1">
-                  {result.score}
-                  <span className="text-xs text-slate-400 font-sans font-normal"> / 100</span>
-                </p>
-              </div>
+            {hasSimAndQuiz ? (
+              <div className="grid grid-cols-2 sm:grid-cols-5 gap-4 mt-8 pt-6 border-t border-slate-800 text-center">
+                <div>
+                  <p className="text-xs text-slate-400">Skor Simulasi (70%)</p>
+                  <p className="text-2xl sm:text-3xl font-extrabold font-mono text-white mt-1">
+                    {result.simScore}
+                  </p>
+                </div>
 
-              <div>
-                <p className="text-xs text-slate-400">Total XP Diraih</p>
-                <p className="text-3xl font-extrabold font-mono text-teal-400 mt-1">
-                  +{result.totalXP}
-                </p>
-              </div>
+                <div>
+                  <p className="text-xs text-slate-400">Skor Kuis (30%)</p>
+                  <p className="text-2xl sm:text-3xl font-extrabold font-mono text-white mt-1">
+                    {result.quizScore}
+                  </p>
+                </div>
 
-              <div>
-                <p className="text-xs text-slate-400">Durasi Selesai</p>
-                <p className="text-3xl font-extrabold font-mono text-white mt-1">
-                  {Math.floor(result.elapsedSeconds / 60)}:
-                  {(result.elapsedSeconds % 60).toString().padStart(2, '0')}
-                </p>
+                <div>
+                  <p className="text-xs text-slate-400">Skor Akhir Misi</p>
+                  <p className="text-2xl sm:text-3xl font-extrabold font-mono text-amber-300 mt-1">
+                    {result.score}
+                    <span className="text-xs text-slate-400 font-sans font-normal"> / 100</span>
+                  </p>
+                </div>
+
+                <div>
+                  <p className="text-xs text-slate-400">Total XP Diraih</p>
+                  <p className="text-2xl sm:text-3xl font-extrabold font-mono text-teal-400 mt-1">
+                    +{result.totalXP}
+                  </p>
+                </div>
+
+                <div className="col-span-2 sm:col-span-1">
+                  <p className="text-xs text-slate-400">Durasi Selesai</p>
+                  <p className="text-2xl sm:text-3xl font-extrabold font-mono text-white mt-1">
+                    {Math.floor(result.elapsedSeconds / 60)}:
+                    {(result.elapsedSeconds % 60).toString().padStart(2, '0')}
+                  </p>
+                </div>
               </div>
-            </div>
+            ) : (
+              <div className="grid grid-cols-3 gap-4 mt-8 pt-6 border-t border-slate-800 text-center">
+                <div>
+                  <p className="text-xs text-slate-400">
+                    {isPreTest ? 'Skor Pemetaan' : 'Skor Akhir Misi'}
+                  </p>
+                  <p className="text-3xl font-extrabold font-mono text-white mt-1">
+                    {result.score}
+                    <span className="text-xs text-slate-400 font-sans font-normal"> / 100</span>
+                  </p>
+                </div>
+
+                <div>
+                  <p className="text-xs text-slate-400">Total XP Diraih</p>
+                  <p className="text-3xl font-extrabold font-mono text-teal-400 mt-1">
+                    +{result.totalXP}
+                  </p>
+                </div>
+
+                <div>
+                  <p className="text-xs text-slate-400">Durasi Selesai</p>
+                  <p className="text-3xl font-extrabold font-mono text-white mt-1">
+                    {Math.floor(result.elapsedSeconds / 60)}:
+                    {(result.elapsedSeconds % 60).toString().padStart(2, '0')}
+                  </p>
+                </div>
+              </div>
+            )}
           </div>
 
           <div className="p-6 sm:p-8 space-y-6 text-left text-xs">
+            {/* Simulation + Quiz Formula Note */}
+            {hasSimAndQuiz && (
+              <div className="p-4 rounded-2xl bg-teal-50/70 border border-teal-200 text-teal-950 flex flex-wrap items-center justify-between gap-2">
+                <span className="font-semibold">
+                  Rumus Skor Akhir Misi Simulasi: 70% × Skor Simulasi ({result.simScore}) + 30% × Skor Kuis ({result.quizScore})
+                </span>
+                <span className="font-mono font-extrabold text-teal-800">
+                  = {result.score} / 100
+                </span>
+              </div>
+            )}
+
             {/* XP Bonus Breakdown */}
             <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-2">
               <span className="font-bold text-slate-900 block">Rincian Perhitungan XP (PRD Bagian 4):</span>
@@ -138,7 +205,7 @@ export const ScreenDebriefing: React.FC = () => {
             </div>
 
             {/* Badges Unlocked */}
-            {result.unlockedBadgeIds.length > 0 && (
+            {unlockedBadgeNames.length > 0 && (
               <div className="p-4 rounded-2xl bg-amber-50 border border-amber-200 flex items-center gap-4">
                 <div className="w-10 h-10 rounded-xl bg-amber-500 text-white flex items-center justify-center shrink-0">
                   <Trophy className="w-5 h-5" />
@@ -148,7 +215,7 @@ export const ScreenDebriefing: React.FC = () => {
                     Lencana Baru Terbuka!
                   </span>
                   <p className="font-bold text-slate-900 text-sm">
-                    {result.unlockedBadgeIds.join(', ')}
+                    {unlockedBadgeNames.join(', ')}
                   </p>
                 </div>
               </div>
@@ -188,25 +255,13 @@ export const ScreenDebriefing: React.FC = () => {
 
             {/* Action Buttons */}
             <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-6 border-t border-slate-100">
-              <div className="flex flex-col sm:flex-row items-center gap-2.5 w-full sm:w-auto">
-                <button
-                  onClick={() => selectMission(mission.id)}
-                  className="w-full sm:w-auto px-5 py-2.5 rounded-xl border border-slate-300 hover:bg-slate-50 text-slate-700 font-semibold flex items-center justify-center gap-2 cursor-pointer"
-                >
-                  <RotateCcw className="w-4 h-4" />
-                  <span>Ulangi Misi Ini (Bebas)</span>
-                </button>
-
-                {(mission.type === 'simulation' || mission.type === 'drag_drop') && (
-                  <button
-                    onClick={() => startExam('mission_quiz', mission.id)}
-                    className="w-full sm:w-auto px-5 py-2.5 rounded-xl border border-teal-300 bg-teal-50/70 hover:bg-teal-100 text-teal-800 font-semibold flex items-center justify-center gap-2 cursor-pointer"
-                  >
-                    <BookOpen className="w-4 h-4" />
-                    <span>Kuis Misi (5 Soal)</span>
-                  </button>
-                )}
-              </div>
+              <button
+                onClick={() => selectMission(mission.id)}
+                className="w-full sm:w-auto px-5 py-2.5 rounded-xl border border-slate-300 hover:bg-slate-50 text-slate-700 font-semibold flex items-center justify-center gap-2 cursor-pointer"
+              >
+                <RotateCcw className="w-4 h-4" />
+                <span>Ulangi Misi Ini (Bebas)</span>
+              </button>
 
               <button
                 onClick={() => setCurrentScreen('mission_map')}

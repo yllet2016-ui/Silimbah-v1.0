@@ -67,7 +67,7 @@ export const ScreenOperatorDashboard: React.FC = () => {
     );
     const grade = getStudentFinalGrade(s);
     const belowKkmPost = s.postTestScore !== undefined && s.postTestScore < kkmThreshold;
-    const belowKkmFinal = s.postTestScore !== undefined && grade.finalScore < kkmThreshold;
+    const belowKkmFinal = grade.hasPostTest && grade.finalScore !== null && grade.finalScore < kkmThreshold;
     const belowKkmMission = grade.avgMissionScore > 0 && grade.avgMissionScore < kkmThreshold;
     return isInactive || hasMultipleFails || belowKkmPost || belowKkmFinal || belowKkmMission;
   };
@@ -91,7 +91,7 @@ export const ScreenOperatorDashboard: React.FC = () => {
   const totalStudents = operatorStudents.length;
   const passedKkmCount = operatorStudents.filter((s) => {
     const g = getStudentFinalGrade(s);
-    return (s.postTestScore ?? 0) >= kkmThreshold && g.finalScore >= kkmThreshold;
+    return g.hasPostTest && (s.postTestScore ?? 0) >= kkmThreshold && (g.finalScore ?? 0) >= kkmThreshold;
   }).length;
   const graduatedCount = operatorStudents.filter((s) => s.certificateIssued).length;
 
@@ -126,10 +126,15 @@ export const ScreenOperatorDashboard: React.FC = () => {
   const handleExportCSV = () => {
     const headers = 'ID,Nama,Jalur,Level,Total_XP,Pre_Test,Post_Test,Status_Lulus,Terakhir_Aktif\n';
     const rows = filteredStudents
-      .map(
-        (s) =>
-          `"${s.id}","${s.name}","${s.track || 'lengkap'}","${s.levelTitle}",${s.xp},${s.preTestScore ?? 0},${s.postTestScore ?? 0},"${s.certificateIssued ? 'Lulus' : 'Belajar'}","${s.lastActive}"`
-      )
+      .map((s) => {
+        const g = getStudentFinalGrade(s);
+        const statusLabel = s.certificateIssued || g.isEligible
+          ? 'Lulus'
+          : g.hasPostTest
+          ? 'Belum Lulus'
+          : 'Dalam Proses';
+        return `"${s.id}","${s.name}","${s.track || 'lengkap'}","${s.levelTitle}",${s.xp},${s.preTestScore ?? 0},${s.postTestScore ?? '—'},"${statusLabel}","${s.lastActive}"`;
+      })
       .join('\n');
 
     const blob = new Blob([headers + rows], { type: 'text/csv;charset=utf-8;' });
@@ -263,7 +268,7 @@ export const ScreenOperatorDashboard: React.FC = () => {
                 const grade = getStudentFinalGrade(s);
                 const hasBelowKkm =
                   (s.postTestScore !== undefined && s.postTestScore < kkmThreshold) ||
-                  (s.postTestScore !== undefined && grade.finalScore < kkmThreshold) ||
+                  (grade.hasPostTest && grade.finalScore !== null && grade.finalScore < kkmThreshold) ||
                   (grade.avgMissionScore > 0 && grade.avgMissionScore < kkmThreshold);
                 return (
                   <div
@@ -427,14 +432,24 @@ export const ScreenOperatorDashboard: React.FC = () => {
                             Lulus ({gradeInfo.finalScore})
                           </span>
                         ) : needsAttention ? (
-                          <span className="inline-flex items-center gap-1 text-[11px] font-bold text-rose-800 bg-rose-50 px-2 py-0.5 rounded-full border border-rose-200">
-                            <AlertTriangle className="w-3.5 h-3.5 text-rose-600" />
-                            Perlu Perhatian
-                          </span>
+                          <div className="inline-flex flex-col items-center gap-0.5">
+                            <span className="inline-flex items-center gap-1 text-[11px] font-bold text-rose-800 bg-rose-50 px-2 py-0.5 rounded-full border border-rose-200">
+                              <AlertTriangle className="w-3.5 h-3.5 text-rose-600" />
+                              Perlu Perhatian
+                            </span>
+                            <span className="text-[10px] text-slate-400 font-mono">
+                              Nilai Akhir: {gradeInfo.hasPostTest && gradeInfo.finalScore !== null ? gradeInfo.finalScore : '—'}
+                            </span>
+                          </div>
                         ) : (
-                          <span className="text-[11px] text-slate-500 bg-slate-100 px-2 py-0.5 rounded-full">
-                            Dalam Proses
-                          </span>
+                          <div className="inline-flex flex-col items-center gap-0.5">
+                            <span className="text-[11px] text-slate-600 bg-slate-100 px-2.5 py-0.5 rounded-full font-medium">
+                              Dalam Proses
+                            </span>
+                            <span className="text-[10px] text-slate-400 font-mono">
+                              Nilai Akhir: {gradeInfo.hasPostTest && gradeInfo.finalScore !== null ? gradeInfo.finalScore : '—'}
+                            </span>
+                          </div>
                         )}
                       </td>
 

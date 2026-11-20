@@ -78,9 +78,11 @@ Setiap misi simulasi dilengkapi diagram teknis interaktif dan kanvas penampang s
 - AL-01..AL-21 mencakup tinggi lumpur tangki septik, rembesan, setoran truk melebihi kapasitas, BOD efluen > 30 mg/L, pH, bak pengering penuh, lemak pemisah lemak >= 25%, minyak efluen > 5 mg/L, debit puncak, penyumbatan media biofilter, DO bak aerasi < 1,0 mg/L / blower mati, lumpur pengendap akhir >= 1/3, total coliform > 3.000/100 mL, level bak ekualisasi >= 90% (AL-16), saringan tersumbat (AL-17), filter pasir tersumbat (AL-18), sisa klorin di luar 0,2-1,0 mg/L (AL-19), detektor biogas >= 10% LEL / H2S >= 10 ppm (AL-20), dan pelepasan ke badan kali/irigasi saat belum memenuhi mutu (AL-21, penalti -10 poin).
 
 ## 5. GAMIFIKASI & FORMULA PENILAIAN
-- Formula Skor Misi: (0.4 * Aksi Tepat) + (0.3 * Kecepatan) + (0.3 * Kualitas Efluen) - Penalti
+- Formula Skor Misi Kuis (BW-1, GW-1): % Benar - Penalti
+- Formula Skor Simulasi: (0.4 * Aksi Tepat) + (0.3 * Kecepatan) + (0.3 * Kualitas Efluen) - Penalti
+- Skor Akhir Misi Simulasi/Perakitan (BW-2..BW-5, GW-2..GW-5, INT-1..INT-3): (70% * Skor Simulasi) + (30% * Skor Kuis 5 Soal)
 - Formula Nilai Akhir: (40% * Rata-rata Skor Misi) + (60% * Skor Post-Test)
-- Syarat Lulus & Piagam (KKM = 75): (a) semua misi di jalur minimal 1 bintang, (b) nilai post-test >= 75, dan (c) Nilai Akhir >= 75 (Pre-test tidak memengaruhi kelulusan).
+- Syarat Lulus & Piagam (KKM = 75): (a) semua misi di jalur minimal 1 bintang, (b) nilai post-test >= 75, dan (c) Nilai Akhir >= 75 (Pre-test M-0 tidak memiliki batas lulus, hanya pemetaan kemampuan awal dan selesai setelah dikerjakan 1 kali).
 - Predikat:
   * >= 85,0: Lulus Dengan Pujian
   * 80,0 - 84,9: Lulus Sangat Baik
@@ -457,13 +459,13 @@ Password default seluruh akun: SiLimbah#2026
                   1. Formula Skor Misi Individu
                 </span>
                 <code className="block mt-2 font-mono text-slate-900 bg-white p-2.5 rounded-lg border border-slate-300 text-[11px]">
-                  Skor = (0.4 × Aksi) + (0.3 × Waktu) + (0.3 × Efluen) - Penalti
+                  Misi Simulasi = (70% × Skor Simulasi) + (30% × Skor Kuis 5 Soal)
                 </code>
                 <ul className="mt-2 space-y-1 text-slate-600 list-disc list-inside">
-                  <li><strong>Aksi Tepat (40%)</strong>: Ketepatan menyelesaikan SOP instalasi.</li>
-                  <li><strong>Kecepatan (30%)</strong>: Selesai di bawah target waktu misi.</li>
-                  <li><strong>Kualitas Efluen (30%)</strong>: Kepatuhan baku mutu air buangan.</li>
-                  <li><strong>Penalti</strong>: Penggunaan tombol petunjuk (-5 poin) &amp; salah SOP.</li>
+                  <li><strong>Skor Simulasi</strong>: (0,4 × Ketepatan Aksi) + (0,3 × Waktu Respons) + (0,3 × Kualitas Efluen) − Penalti.</li>
+                  <li><strong>Skor Kuis Pasca-Simulasi (30%)</strong>: Dikerjakan setelah klik &quot;Selesaikan Simulasi&quot; (5 soal khusus misi tersebut).</li>
+                  <li><strong>Misi Kuis Saja (BW-1 &amp; GW-1)</strong>: Skor akhir = % benar kuis 5 soal.</li>
+                  <li><strong>Penalti</strong>: Penggunaan tombol petunjuk (-5 poin) &amp; salah SOP / clear manual tanpa penanganan.</li>
                 </ul>
               </div>
 
@@ -475,7 +477,7 @@ Password default seluruh akun: SiLimbah#2026
                   Nilai Akhir = (40% × Rata-rata Misi) + (60% × Post-Test)
                 </code>
                 <p className="text-[11px] text-slate-600 mt-2">
-                  Syarat lulus: semua misi minimal 1★, Post-Test ≥ 75, dan Nilai Akhir ≥ 75 (Pre-Test tidak memengaruhi kelulusan).
+                  Syarat lulus: semua misi minimal 1★, Post-Test ≥ 75, dan Nilai Akhir ≥ 75 (Pre-Test M-0 tidak memiliki batas lulus, hanya pemetaan kemampuan awal dan selesai setelah dikerjakan 1 kali).
                 </p>
                 <ul className="mt-2 space-y-1 text-slate-600 list-disc list-inside">
                   <li><strong>≥ 85,0</strong>: Lulus Dengan Pujian</li>
@@ -667,10 +669,10 @@ Password default seluruh akun: SiLimbah#2026
                 <strong>Ikuti Briefing &amp; Modul Teori:</strong> Baca instruksi teknis dari mentor virtual (Pak Joko) serta pelajari rumus dan studi kasus lapangan.
               </li>
               <li>
-                <strong>Lakukan Simulasi Instalasi:</strong> Buka kanvas simulasi. Pasang atau kendalikan komponen (misal: jalankan aerasi, buang lumpur, bersihkan kisi saringan).
+                <strong>Lakukan Simulasi Instalasi:</strong> Buka kanvas simulasi. Pasang atau kendalikan komponen (misal: jalankan aerasi, buang lumpur, bersihkan kisi saringan), lalu klik &quot;Selesaikan Simulasi&quot;.
               </li>
               <li>
-                <strong>Selesaikan Kuis Evaluasi Misi:</strong> Jawab 5 soal pemahaman khusus misi tersebut untuk mendapatkan bintang (★) dan bonus XP.
+                <strong>Selesaikan Kuis Evaluasi Misi:</strong> Setelah simulasi selesai, jawab 5 soal pemahaman khusus misi tersebut (atau langsung 5 soal untuk BW-1 &amp; GW-1). Untuk misi simulasi/perakitan, Skor Akhir Misi dihitung dari 70% skor simulasi + 30% skor kuis.
               </li>
               <li>
                 <strong>Tuntaskan Post-Test:</strong> Setelah semua level terbuka, selesaikan ujian komprehensif 20 soal sesuai jalur (dengan soal berbeda dari pre-test dan setara tingkat kesulitannya) dengan target nilai minimal 75,0 dan Nilai Akhir ≥ 75,0.

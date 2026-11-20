@@ -125,13 +125,17 @@ export const ScreenStudentDashboard: React.FC = () => {
                 <div className="flex items-center gap-1.5">
                   {gradeInfo.isEligible ? (
                     <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+                  ) : !gradeInfo.hasPostTest ? (
+                    <Clock className="w-4 h-4 text-slate-400" />
                   ) : (
                     <XCircle className="w-4 h-4 text-rose-500" />
                   )}
                   <span>Seluruh Misi Jalur Lulus (Min 1★)</span>
                 </div>
                 <div className="flex items-center gap-1.5">
-                  {(user.postTestScore ?? 0) >= kkmThreshold ? (
+                  {!gradeInfo.hasPostTest ? (
+                    <Clock className="w-4 h-4 text-slate-400" />
+                  ) : (user.postTestScore ?? 0) >= kkmThreshold ? (
                     <CheckCircle2 className="w-4 h-4 text-emerald-400" />
                   ) : (
                     <XCircle className="w-4 h-4 text-rose-500" />
@@ -139,12 +143,16 @@ export const ScreenStudentDashboard: React.FC = () => {
                   <span>Post-Test: {user.postTestScore ?? 'Belum Ujian'} (KKM {kkmThreshold})</span>
                 </div>
                 <div className="flex items-center gap-1.5">
-                  {gradeInfo.finalScore >= kkmThreshold ? (
+                  {!gradeInfo.hasPostTest ? (
+                    <Clock className="w-4 h-4 text-slate-400" />
+                  ) : (gradeInfo.finalScore ?? 0) >= kkmThreshold ? (
                     <CheckCircle2 className="w-4 h-4 text-emerald-400" />
                   ) : (
                     <XCircle className="w-4 h-4 text-rose-500" />
                   )}
-                  <span>Nilai Akhir: {gradeInfo.finalScore} (≥ {kkmThreshold})</span>
+                  <span>
+                    Nilai Akhir: {gradeInfo.hasPostTest && gradeInfo.finalScore !== null ? gradeInfo.finalScore : '—'} (≥ {kkmThreshold})
+                  </span>
                 </div>
               </div>
             </div>
@@ -155,9 +163,17 @@ export const ScreenStudentDashboard: React.FC = () => {
                   Nilai Akhir Kelulusan:
                 </span>
                 <span className={`text-2xl font-extrabold font-mono ml-2 ${gradeInfo.isEligible ? 'text-amber-300' : 'text-slate-900'}`}>
-                  {gradeInfo.finalScore}
+                  {gradeInfo.hasPostTest && gradeInfo.finalScore !== null ? gradeInfo.finalScore : '—'}
                 </span>
-                <span className="block text-[11px] font-semibold text-teal-400">
+                <span
+                  className={`block text-[11px] font-semibold ${
+                    gradeInfo.isEligible
+                      ? 'text-teal-400'
+                      : gradeInfo.hasPostTest
+                      ? 'text-rose-600'
+                      : 'text-slate-500'
+                  }`}
+                >
                   Predikat: {gradeInfo.predicate}
                 </span>
               </div>

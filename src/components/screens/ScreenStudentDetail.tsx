@@ -131,8 +131,8 @@ export const ScreenStudentDetail: React.FC = () => {
                 <span>Terbitkan Piagam Sekarang</span>
               </button>
             ) : (
-              <span className="px-3 py-2 bg-slate-100 text-slate-400 font-medium text-xs rounded-xl">
-                Belum Memenuhi Syarat Lulus
+              <span className="px-3 py-2 bg-slate-100 text-slate-500 font-medium text-xs rounded-xl">
+                {gradeInfo.hasPostTest ? 'Belum Memenuhi Syarat Lulus' : 'Dalam Proses'}
               </span>
             )}
           </div>
@@ -166,12 +166,20 @@ export const ScreenStudentDetail: React.FC = () => {
             <div className="p-3 bg-slate-50 rounded-xl border border-slate-100">
               <span className="text-slate-400">Nilai Akhir Terhitung</span>
               <p className="text-lg font-extrabold font-mono text-teal-800 mt-0.5">
-                {gradeInfo.finalScore}
+                {gradeInfo.hasPostTest && gradeInfo.finalScore !== null ? gradeInfo.finalScore : '—'}
               </p>
             </div>
             <div className="p-3 bg-slate-50 rounded-xl border border-slate-100">
               <span className="text-slate-400">Predikat Kelulusan</span>
-              <p className={`text-xs font-bold mt-1 ${gradeInfo.isEligible ? 'text-emerald-700' : 'text-rose-700'}`}>
+              <p
+                className={`text-xs font-bold mt-1 ${
+                  gradeInfo.isEligible
+                    ? 'text-emerald-700'
+                    : gradeInfo.hasPostTest
+                    ? 'text-rose-700'
+                    : 'text-slate-600'
+                }`}
+              >
                 {gradeInfo.predicate}
               </p>
             </div>

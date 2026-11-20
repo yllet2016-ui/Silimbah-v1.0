@@ -130,7 +130,8 @@ export const ScreenMissionMap: React.FC = () => {
   const renderMissionCard = (m: Mission) => {
     const unlocked = isMissionUnlocked(m.id);
     const completion = completedMissions[m.id];
-    const isCompleted = !!completion && completion.stars >= 1;
+    const isPreTest = m.id === 'M-0';
+    const isCompleted = isPreTest ? !!completion : !!completion && completion.stars >= 1;
 
     return (
       <div
@@ -164,24 +165,31 @@ export const ScreenMissionMap: React.FC = () => {
                 <span>Terkunci</span>
               </div>
             ) : isCompleted ? (
-              <div className="flex items-center gap-0.5 text-amber-500">
-                {[1, 2, 3].map((starIdx) => {
-                  const effectiveStars = Math.max(
-                    completion.stars,
-                    completion.score >= 90 ? 3 : completion.score >= 75 ? 2 : completion.score >= 60 ? 1 : 0
-                  );
-                  return (
-                    <Star
-                      key={starIdx}
-                      className={`w-4 h-4 ${
-                        starIdx <= effectiveStars
-                          ? 'fill-amber-400 text-amber-400'
-                          : 'text-slate-200'
-                      }`}
-                    />
-                  );
-                })}
-              </div>
+              isPreTest ? (
+                <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-teal-700 bg-teal-50 px-2 py-0.5 rounded border border-teal-200">
+                  <CheckCircle2 className="w-3.5 h-3.5 text-teal-600" />
+                  Selesai
+                </span>
+              ) : (
+                <div className="flex items-center gap-0.5 text-amber-500">
+                  {[1, 2, 3].map((starIdx) => {
+                    const effectiveStars = Math.max(
+                      completion.stars,
+                      completion.score >= 90 ? 3 : completion.score >= 75 ? 2 : completion.score >= 60 ? 1 : 0
+                    );
+                    return (
+                      <Star
+                        key={starIdx}
+                        className={`w-4 h-4 ${
+                          starIdx <= effectiveStars
+                            ? 'fill-amber-400 text-amber-400'
+                            : 'text-slate-200'
+                        }`}
+                      />
+                    );
+                  })}
+                </div>
+              )
             ) : (
               <span className="text-[11px] font-semibold text-amber-600 bg-amber-50 px-2 py-0.5 rounded border border-amber-200/50">
                 Tersedia Sekarang
