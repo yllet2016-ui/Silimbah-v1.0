@@ -91,7 +91,9 @@ export const ScreenMissionBriefing: React.FC = () => {
                     ? 'Simulasi Dinamis'
                     : mission.type === 'drag_drop'
                     ? 'Seret-Lepas Rakit'
-                    : 'Kuis Interaktif'}
+                    : mission.type === 'pre_test' || mission.type === 'post_test'
+                    ? 'Ujian 20 Soal Sesuai Jalur'
+                    : 'Kuis 5 Soal Khusus Misi'}
                 </p>
               </div>
             </div>
@@ -144,6 +146,7 @@ export const ScreenMissionBriefing: React.FC = () => {
               <span className="font-bold text-slate-900 block">Aturan Penilaian & Bonus XP:</span>
               <ul className="list-disc list-inside space-y-1 text-slate-600 text-[11px]">
                 <li>Skor akhir (0–100): Kuis = % Benar; Simulasi = 40% Ketepatan Aksi + 30% Waktu Respons + 30% Kualitas Efluen - Penalti.</li>
+                <li>Format soal evaluasi: kuis misi memakai 5 soal khusus misi tersebut; pre-test dan post-test masing-masing 20 soal sesuai jalur, dengan soal yang berbeda (setara tingkat kesulitannya).</li>
                 <li>Bintang: 1★ (60–74), 2★ (75–89), 3★ (≥90). Jika &lt;60 misi belum lulus dan boleh diulang bebas.</li>
                 <li>Bonus XP hingga +20%: Tambahan +10% jika menyelesaikan tanpa membuka petunjuk bantuan, dan +10% jika selesai di bawah target waktu.</li>
                 <li>Membuka info narasi objek pada simulasi tidak mengurangi poin skor.</li>

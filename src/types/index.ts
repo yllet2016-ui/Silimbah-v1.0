@@ -190,9 +190,12 @@ export interface Certificate {
 }
 
 export interface QuizQuestion {
-  id: number;
+  id: string | number;
+  set: 'quiz' | 'pre' | 'post';
+  missionId?: string;
   track: 'black_water' | 'grey_water' | 'lengkap' | 'all';
-  level: number;
+  includeInLengkap?: boolean;
+  level?: number;
   question: string;
   options: [string, string, string, string];
   correctIndex: number;

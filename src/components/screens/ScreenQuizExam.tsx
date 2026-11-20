@@ -15,6 +15,15 @@ import {
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 
+const shuffleQuestions = (items: QuizQuestion[]): QuizQuestion[] => {
+  const arr = [...items];
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+};
+
 export const ScreenQuizExam: React.FC = () => {
   const {
     activeMissionId,
@@ -28,23 +37,50 @@ export const ScreenQuizExam: React.FC = () => {
   } = useApp();
 
   const mission = missions.find((m) => m.id === activeMissionId) || missions[0];
+  const activeTrack = currentUser?.track || 'lengkap';
 
   // Determine questions for this exam
   const examQuestions = React.useMemo(() => {
     if (currentExamType === 'mission_quiz') {
-      // 5 questions specific to track/level
+      // Tepat 5 soal dengan set = "quiz" dan missionId = id misi yang sedang dikerjakan
       const matched = questions.filter(
-        (q) => q.track === mission.track || q.track === 'all'
+        (q) => q.set === 'quiz' && q.missionId === mission.id
       );
-      return matched.slice(0, 5);
+      return shuffleQuestions(matched).slice(0, 5);
     }
-    // Pre-test or Post-test: 20 questions
-    return questions.slice(0, 20);
-  }, [currentExamType, mission.track, questions]);
+
+    // Pre-test (set = "pre") atau Post-test (set = "post"): 20 soal sesuai jalur
+    const targetSet = currentExamType === 'pre_test' ? 'pre' : 'post';
+    const pool = questions.filter((q) => q.set === targetSet);
+    const umum = shuffleQuestions(pool.filter((q) => q.track === 'all')).slice(0, 6);
+
+    if (activeTrack === 'black_water') {
+      const bw = shuffleQuestions(
+        pool.filter((q) => q.track === 'black_water')
+      ).slice(0, 14);
+      return shuffleQuestions([...umum, ...bw]);
+    }
+
+    if (activeTrack === 'grey_water') {
+      const gw = shuffleQuestions(
+        pool.filter((q) => q.track === 'grey_water')
+      ).slice(0, 14);
+      return shuffleQuestions([...umum, ...gw]);
+    }
+
+    // Jalur Lengkap: 6 all + 7 black_water (includeInLengkap) + 7 grey_water (includeInLengkap)
+    const bwLengkap = shuffleQuestions(
+      pool.filter((q) => q.track === 'black_water' && q.includeInLengkap === true)
+    ).slice(0, 7);
+    const gwLengkap = shuffleQuestions(
+      pool.filter((q) => q.track === 'grey_water' && q.includeInLengkap === true)
+    ).slice(0, 7);
+    return shuffleQuestions([...umum, ...bwLengkap, ...gwLengkap]);
+  }, [currentExamType, mission.id, activeTrack, questions]);
 
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [selectedAnswers, setSelectedAnswers] = useState<Record<number, number>>({});
-  const [flaggedQuestions, setFlaggedQuestions] = useState<Set<number>>(new Set());
+  const [selectedAnswers, setSelectedAnswers] = useState<Record<string | number, number>>({});
+  const [flaggedQuestions, setFlaggedQuestions] = useState<Set<string | number>>(new Set());
   const [hintsUsed, setHintsUsed] = useState(0);
   const [activeHint, setActiveHint] = useState<string | null>(null);
   const [secondsRemaining, setSecondsRemaining] = useState<number>(() => {
@@ -77,7 +113,7 @@ export const ScreenQuizExam: React.FC = () => {
     }));
   };
 
-  const toggleFlagQuestion = (qId: number) => {
+  const toggleFlagQuestion = (qId: string | number) => {
     setFlaggedQuestions((prev) => {
       const next = new Set(prev);
       if (next.has(qId)) next.delete(qId);
@@ -108,7 +144,10 @@ export const ScreenQuizExam: React.FC = () => {
       }
     });
 
-    const rawScore = Math.round((correctCount / examQuestions.length) * 100);
+    const rawScore =
+      examQuestions.length > 0
+        ? Math.round((correctCount / examQuestions.length) * 100)
+        : 0;
     // Apply hint penalty: -5 per hint (PRD Bagian 4)
     const finalScore = Math.max(0, rawScore - hintsUsed * 5);
 

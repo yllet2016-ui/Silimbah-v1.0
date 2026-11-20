@@ -106,6 +106,8 @@ interface AppContextType {
   renewOperatorLicense: (operatorId: string, newDate: string) => void;
   resetMissionsForStudent: (studentId: string) => void;
   resetAllDemoData: () => void;
+  addQuestion: (question: QuizQuestion) => void;
+  importQuestions: (newQuestions: QuizQuestion[]) => void;
   logAlertAction: (entry: Omit<AlertLogEntry, 'id' | 'timestamp'>) => void;
 
   // Helpers
@@ -160,7 +162,20 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     return saved ? JSON.parse(saved) : INITIAL_FACILITIES;
   });
 
-  const [questions, setQuestions] = useState<QuizQuestion[]>(QUESTION_BANK);
+  const [questions, setQuestions] = useState<QuizQuestion[]>(() => {
+    const saved = localStorage.getItem(`${STORAGE_KEY}_questions`);
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length > 0 && parsed.every((q) => q && typeof q.set === 'string')) {
+          return parsed;
+        }
+      } catch {
+        // fallback to default QUESTION_BANK
+      }
+    }
+    return QUESTION_BANK;
+  });
   const [missions] = useState<Mission[]>(INITIAL_MISSIONS);
   const [kkmThreshold, setKkmThreshold] = useState<number>(75);
 
@@ -221,6 +236,10 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   useEffect(() => {
     localStorage.setItem(`${STORAGE_KEY}_alert_logs`, JSON.stringify(alertLogs));
   }, [alertLogs]);
+
+  useEffect(() => {
+    localStorage.setItem(`${STORAGE_KEY}_questions`, JSON.stringify(questions));
+  }, [questions]);
 
   const currentUser = users.find((u) => u.id === currentUserId) || null;
   const currentOperator = operators.find((o) => o.id === currentUser?.operatorId) || null;
@@ -603,11 +622,13 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       localStorage.removeItem(`${prefix}_certificates`);
       localStorage.removeItem(`${prefix}_facilities`);
       localStorage.removeItem(`${prefix}_alert_logs`);
+      localStorage.removeItem(`${prefix}_questions`);
     });
     setUsers(INITIAL_USERS);
     setOperators(INITIAL_OPERATORS);
     setCertificates(INITIAL_CERTIFICATES);
     setFacilities(INITIAL_FACILITIES);
+    setQuestions(QUESTION_BANK);
     setAlertLogs([
       {
         id: 'log_init_1',
@@ -635,6 +656,15 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     setCurrentUserId('usr_peserta_lengkap');
     setActiveScreen('mission_map');
     setActiveMissionId('BW-4');
+  };
+
+  const addQuestion = (question: QuizQuestion) => {
+    setQuestions((prev) => [question, ...prev]);
+  };
+
+  const importQuestions = (newQuestions: QuizQuestion[]) => {
+    if (newQuestions.length === 0) return;
+    setQuestions((prev) => [...newQuestions, ...prev]);
   };
 
   const logAlertAction = (entry: Omit<AlertLogEntry, 'id' | 'timestamp'>) => {
@@ -685,6 +715,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         renewOperatorLicense,
         resetMissionsForStudent,
         resetAllDemoData,
+        addQuestion,
+        importQuestions,
         logAlertAction,
         getStudentFinalGrade,
         getTrackMaxXP,

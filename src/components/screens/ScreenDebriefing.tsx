@@ -19,7 +19,7 @@ export const ScreenDebriefing: React.FC = () => {
     missions,
     setCurrentScreen,
     selectMission,
-    currentUser,
+    startExam,
   } = useApp();
 
   const result = lastDebriefResult || {
@@ -188,13 +188,25 @@ export const ScreenDebriefing: React.FC = () => {
 
             {/* Action Buttons */}
             <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-6 border-t border-slate-100">
-              <button
-                onClick={() => selectMission(mission.id)}
-                className="w-full sm:w-auto px-5 py-2.5 rounded-xl border border-slate-300 hover:bg-slate-50 text-slate-700 font-semibold flex items-center justify-center gap-2 cursor-pointer"
-              >
-                <RotateCcw className="w-4 h-4" />
-                <span>Ulangi Misi Ini (Bebas)</span>
-              </button>
+              <div className="flex flex-col sm:flex-row items-center gap-2.5 w-full sm:w-auto">
+                <button
+                  onClick={() => selectMission(mission.id)}
+                  className="w-full sm:w-auto px-5 py-2.5 rounded-xl border border-slate-300 hover:bg-slate-50 text-slate-700 font-semibold flex items-center justify-center gap-2 cursor-pointer"
+                >
+                  <RotateCcw className="w-4 h-4" />
+                  <span>Ulangi Misi Ini (Bebas)</span>
+                </button>
+
+                {(mission.type === 'simulation' || mission.type === 'drag_drop') && (
+                  <button
+                    onClick={() => startExam('mission_quiz', mission.id)}
+                    className="w-full sm:w-auto px-5 py-2.5 rounded-xl border border-teal-300 bg-teal-50/70 hover:bg-teal-100 text-teal-800 font-semibold flex items-center justify-center gap-2 cursor-pointer"
+                  >
+                    <BookOpen className="w-4 h-4" />
+                    <span>Kuis Misi (5 Soal)</span>
+                  </button>
+                )}
+              </div>
 
               <button
                 onClick={() => setCurrentScreen('mission_map')}

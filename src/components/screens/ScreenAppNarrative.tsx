@@ -52,7 +52,7 @@ Aplikasi membagi pengolahan air limbah domestik menjadi dua jalur spesifik:
 ## 2. JALUR PEMBELAJARAN & MISI (PRD v1.1)
 Terdapat 3 pilihan track pembelajaran:
 1. Jalur Black Water (Maks 1.500 XP):
-   - Pre-Test: Diagnostik awal.
+   - Pre-Test: Diagnostik awal 20 soal sesuai jalur (soal berbeda dari post-test, setara tingkat kesulitannya).
    - BW-1: Kenali Black Water (100 XP).
    - BW-2: Rakit Tangki Septik Kedap SNI 2398:2017 (150 XP).
    - BW-3: Jadwal Penyedotan Lumpur L2T2 (200 XP).
@@ -66,7 +66,10 @@ Terdapat 3 pilihan track pembelajaran:
    - GW-5: Pakai Ulang Aman — Filter pasir, disinfeksi klorinasi, deklorinasi, bak kontrol akhir nonpangan (400 XP).
 3. Jalur Lengkap (Black Water + Grey Water + INT-1 s.d. INT-3, Maks 3.400 XP):
    - Seluruh misi BW dan GW + 3 misi berurutan INT-1 (200 XP), INT-2 (250 XP), INT-3 (300 XP).
-   - Post-Test Kelulusan (300 XP): Ujian komprehensif penentu piagam.
+   - Post-Test Kelulusan (300 XP): Ujian komprehensif 20 soal sesuai jalur (berbeda dengan soal pre-test, setara tingkat kesulitannya) penentu piagam.
+4. Ketentuan Bank Soal Evaluasi:
+   - Kuis setiap misi menggunakan 5 soal khusus misi tersebut (BW-1 s.d. BW-5, GW-1 s.d. GW-5, dan INT-1 s.d. INT-3).
+   - Pre-test dan post-test masing-masing 20 soal sesuai jalur (BW: 6 umum + 14 BW; GW: 6 umum + 14 GW; Lengkap: 6 umum + 7 BW + 7 GW), dengan soal yang berbeda (setara tingkat kesulitannya).
 
 ## 3. SIMULASI INSTALASI & KANVAS TERINTEGRASI
 Setiap misi simulasi dilengkapi diagram teknis interaktif dan kanvas penampang skematis terintegrasi (1752 x 897 px) dengan animasi penanda arah aliran (<animateMotion>), hotspot narasi (i), peredupan tahap non-aktif, sorotan alert merah/kuning, tombol Perbesar, serta submodul Animasi Aliran Terintegrasi di Modul Teori.
@@ -105,7 +108,7 @@ Setiap misi simulasi dilengkapi diagram teknis interaktif dan kanvas penampang s
 Password default seluruh akun: SiLimbah#2026
 
 ## 7. CARA MENGGUNAKAN APLIKASI
-- Sebagai Peserta: Login -> Pilih Jalur -> Selesaikan Misi -> Ikuti Briefing -> Pelajari Teori -> Lakukan Simulasi & Atasi Alert -> Selesaikan Kuis & Post-Test (target minimal 75,0) -> Unduh Piagam Kelulusan Pelatihan.
+- Sebagai Peserta: Login -> Pilih Jalur -> Kerjakan Pre-Test (20 soal sesuai jalur) -> Selesaikan Misi -> Ikuti Briefing -> Pelajari Teori -> Lakukan Simulasi & Atasi Alert -> Selesaikan Kuis (5 soal khusus misi tersebut) & Post-Test (20 soal sesuai jalur yang berbeda dari pre-test dengan kesulitan setara, target minimal 75,0) -> Unduh Piagam Kelulusan Pelatihan.
 - Sebagai Instruktur: Buka Evaluasi Kelas -> Pantau Siswa Perlu Perhatian (< 75) -> Ekspor Laporan CSV -> Atur Soal Kuis.
 - Sebagai Admin Operator: Kelola akun operator dan pantau status fasilitas tangki/truk.
 - Sebagai Pimpinan / Publik: Verifikasi keaslian piagam via nomor sertifikat atau QR Code.
@@ -206,7 +209,7 @@ Password default seluruh akun: SiLimbah#2026
       content: (
         <div className="space-y-6">
           <p className="text-sm text-slate-600 leading-relaxed">
-            Kurikulum SiLimbah tersusun dalam struktur berjenjang (*progression curve*). Jalur Lengkap berjumlah 15 misi (Pre-Test, 10 misi kolom BW &amp; GW, 3 misi integrasi berurutan INT-1 → INT-2 → INT-3, serta Post-Test) dengan total maksimum <strong>3.400 XP</strong>.
+            Kurikulum SiLimbah tersusun dalam struktur berjenjang (*progression curve*). Jalur Lengkap berjumlah 15 misi (Pre-Test, 10 misi kolom BW &amp; GW, 3 misi integrasi berurutan INT-1 → INT-2 → INT-3, serta Post-Test) dengan total maksimum <strong>3.400 XP</strong>. Kuis setiap misi menggunakan <strong>5 soal khusus misi tersebut</strong> (BW-1 s.d. BW-5, GW-1 s.d. GW-5, dan INT-1 s.d. INT-3), sedangkan <strong>pre-test dan post-test masing-masing 20 soal sesuai jalur</strong>, dengan soal yang berbeda (setara tingkat kesulitannya).
           </p>
 
           <div className="space-y-3">
@@ -658,7 +661,7 @@ Password default seluruh akun: SiLimbah#2026
                 <strong>Pilih Jalur Belajar:</strong> Setelah login, buka <em>Peta Misi</em> dan tentukan jalur (Black Water, Grey Water, atau Lengkap).
               </li>
               <li>
-                <strong>Kerjakan Pre-Test:</strong> Buka Misi Pre-Test untuk mengukur kompetensi dasar Anda (tidak mempengaruhi kelulusan akhir).
+                <strong>Kerjakan Pre-Test:</strong> Buka Misi Pre-Test (20 soal sesuai jalur, dengan soal yang berbeda dari post-test namun setara tingkat kesulitannya) untuk mengukur kompetensi dasar Anda (tidak memengaruhi kelulusan akhir).
               </li>
               <li>
                 <strong>Ikuti Briefing &amp; Modul Teori:</strong> Baca instruksi teknis dari mentor virtual (Pak Joko) serta pelajari rumus dan studi kasus lapangan.
@@ -667,10 +670,10 @@ Password default seluruh akun: SiLimbah#2026
                 <strong>Lakukan Simulasi Instalasi:</strong> Buka kanvas simulasi. Pasang atau kendalikan komponen (misal: jalankan aerasi, buang lumpur, bersihkan kisi saringan).
               </li>
               <li>
-                <strong>Selesaikan Kuis Evaluasi Misi:</strong> Jawab 5 soal pemahaman untuk mendapatkan bintang (★) dan bonus XP.
+                <strong>Selesaikan Kuis Evaluasi Misi:</strong> Jawab 5 soal pemahaman khusus misi tersebut untuk mendapatkan bintang (★) dan bonus XP.
               </li>
               <li>
-                <strong>Tuntaskan Post-Test:</strong> Setelah semua level terbuka, selesaikan ujian komprehensif 20 soal dengan target nilai minimal 75,0 dan Nilai Akhir ≥ 75,0.
+                <strong>Tuntaskan Post-Test:</strong> Setelah semua level terbuka, selesaikan ujian komprehensif 20 soal sesuai jalur (dengan soal berbeda dari pre-test dan setara tingkat kesulitannya) dengan target nilai minimal 75,0 dan Nilai Akhir ≥ 75,0.
               </li>
               <li>
                 <strong>Cetak Piagam Kelulusan:</strong> Kunjungi menu <em>Piagam</em> untuk mengunduh piagam kelulusan pelatihan yang dilengkapi nomor registrasi dan kode QR verifikasi.
